@@ -6,10 +6,10 @@
 export const environment = {
   production: false,
   name: 'development',
-  baseUrl: 'http://localhost',
-  loginUrl: 'http://localhost/Core/login?site=serverweb&url=',
-  encodingUrl: 'http://localhost:63201/api',
-  ticketUrl: 'http://localhost:3000',
+  baseUrl: '*****************************',
+  loginUrl: '*****************************',
+  encodingUrl: '*****************************',
+  ticketUrl: '*****************************',
   topBarColor: '#878a8c',
   version: '2.0.14'
 };
