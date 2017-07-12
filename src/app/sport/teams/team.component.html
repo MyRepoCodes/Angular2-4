@@ -1,0 +1,165 @@
+﻿<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <form *ngIf="team" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" pInputText [ngModel]="team.id" [formControl]="form.controls.id">
+      <div class="ui-g form-group">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Team Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.name" placeholder="Required"
+                   [ngModel]="team.name"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i>
+              Team Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Abbreviation *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text"
+                   [formControl]="form.controls.abbreviation" placeholder="Required" [ngModel]="team.abbreviation"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.abbreviation.valid && form.controls.abbreviation.dirty">
+              <i class="fa fa-close"></i>
+              Team Abbrevation is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Customer :
+          </div>
+          <div class="ui-g-6">
+            <p-checkbox [formControl]="form.controls.customer" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Full Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text"
+                   [formControl]="form.controls.fullName" placeholder="Required" [ngModel]="team.fullName"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.fullName.valid && form.controls.fullName.dirty">
+              <i class="fa fa-close"></i>
+              Full Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Time Zone:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="team.timeZone" [formControl]="form.controls.timeZone"/>
+          </div>
+        </div>
+
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-sport #selectSport [sport]="sportId"
+                             (sportChanged)="sportChanged($event)"></sn-select-sport>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i>
+              Sport is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            League *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-league #selectLeague [sport]="sportId" [league]="leagueId"
+                              (leagueChanged)="leagueChanged($event)">
+            </sn-select-league>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.leagueId.valid && form.controls.leagueId.dirty">
+              <i class="fa fa-close"></i>
+              League is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Division *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-division #selectDivision [league]="leagueId" [division]="divisionId"
+                                (divisionChanged)="divisionChanged($event)">
+            </sn-select-division>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.divisionId.valid && form.controls.divisionId.dirty">
+              <i class="fa fa-close"></i>
+              Division is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Conference *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-conference #selectConference [league]="leagueId" [conference]="conferenceId"
+                                  (conferenceChanged)="conferenceChanged($event)"></sn-select-conference>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-2">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}"
+                    [disabled]="! form.valid"
+                    class="BlueButton"></button>
+
+          </div>
+          <div class="ui-g-3">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(team.id)" type="button"
+                    [disabled]="team.isDeleted"
+                    class="RedButton"></button>
+          </div>
+          <div class="ui-g-2">
+          </div>
+          <div class="ui-g-3"></div>
+        </div>
+
+      </div>
+    </form>
+    <div *ngIf="!team && !loading">Team not found.</div>
+    <div class="ui-g-12 ui-g-nopad" style="margin: 10px 0px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button pButton type="button" (click)="onCancel()" label="Back to List" class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sn-page>

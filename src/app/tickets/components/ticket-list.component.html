@@ -1,0 +1,35 @@
+<div class="ui-g">
+    <p-dataTable [value]="tickets">
+      <header>
+        <div class="ui-helper-clearfix">
+          <div class="ui-g-10">
+            Tickets List
+          </div>
+          <div class="ui-g-2 sn-md-actions">
+            <button pButton (click)="goToCreateTicket()" icon="fa-plus-circle" styleClass="floatRight"></button>
+          </div>
+        </div>
+      </header>
+      <p-column field="name" header="Name" [sortable]="true"></p-column>
+      <p-column field="creator.username" header="Creator" [sortable]="true"></p-column>
+      <p-column header="Owner">
+        <template let-col let-ticket="rowData" pTemplate type="body">
+          {{ticket.ticketOwner ? ticket.ticketOwner.username : '-'}}
+        </template>
+      </p-column>
+      <p-column header="Created">
+        <template let-col let-ticket="rowData" pTemplate type="body">
+          {{ticket.creationDate | snTimeSince}}
+        </template>
+      </p-column>
+      <p-column field="ticketGroup" header="Department" [sortable]="true"></p-column>
+      <p-column field="status" header="Status" [sortable]="true"></p-column>
+      <p-column field="type" header="Type" [sortable]="true"></p-column>
+      <p-column header="Link">
+        <template let-col let-ticket="rowData" pTemplate type="body">
+          <a [routerLink]="['/ticketing/tickets', ticket.id]">Details</a>
+        </template>
+      </p-column>
+    </p-dataTable>
+</div>
+

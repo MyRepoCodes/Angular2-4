@@ -1,0 +1,76 @@
+<div class="Container100 NoIndent" *ngIf="ticket">
+  <div class="ui-grid-row">
+    <div class="ui-g-6">
+      <h1 class="CardBigTopic">{{ticket.name}}</h1>
+    </div>
+    <div class="ui-g-6" *ngIf="isAdmin(user)">
+      <button pButton label="Close" class="danger" icon="fa-times" class="Fright" (click)="closeTicket()"></button>
+      <button pButton label="Assign to me" icon="fa-user-plus " class="Fright" (click)="assignToMe()" [disabled]="cantClaim()"></button>
+    </div>
+  </div>
+  <div class="SeparatorFull"></div>
+  <div class="ui-g">
+    <div class="ui-g-6">
+      <div class="ui-g-8 details">
+        <h3>Details</h3>
+        <div class="ui-g-6">
+          Name:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.name}}
+        </div>
+        <div class="ui-g-6">
+          Creator:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.creator.username}}
+        </div>
+        <div class="ui-g-6">
+          Owner:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.ticketOwner ? ticket.ticketOwner.username : '-'}}
+        </div>
+        <div class="ui-g-6">
+          Type:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.type.toString()}}
+        </div>
+        <div class="ui-g-6">
+          Created:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.creationDate | snTimeSince}}
+        </div>
+        <div class="ui-g-6">
+          Status:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.status}}
+        </div>
+        <div class="ui-g-6">
+          Ticket Group:
+        </div>
+        <div class="ui-g-6">
+          {{ticket.ticketGroup}}
+        </div>
+      </div>
+      <div class="ui-g-4 secondary-details">
+        <h3>Links</h3>
+        <ul>
+          <li *ngFor="let link of ticket.links">
+            <a href="{{link.url}}">{{link.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="ui-g-6">
+      <section class="description">
+        <p-fieldset legend="Description">
+          {{ticket.description}}
+        </p-fieldset>
+      </section>
+    </div>
+  </div>
+</div>

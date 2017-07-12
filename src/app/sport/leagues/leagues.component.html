@@ -1,0 +1,77 @@
+<sn-page [title]="'League List'">
+
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+
+  <div content="body" class="ui-g">
+
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <sn-select-sport
+          [sport]="sportId"
+          (sportChanged)="sportChanged($event)"
+        ></sn-select-sport>
+      </div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2">
+        <button pButton type="button" label="Search" (click)="search()" ></button>
+      </div>
+    </div>
+
+    <div class="ui-g-12">
+      <p-dataTable *ngIf="! loading" [value]="leagues">
+
+        <p-header>
+          <sn-table-header #header
+            [name]="'League List'"
+            (add)="onAdd()"
+          ></sn-table-header>
+        </p-header>
+
+        <p-column [hidden]="! header.isIdsVisible()" field="id" header="ID"></p-column>
+
+        <p-column field="iid" header="IID" [style]="{'width': '80px'}"></p-column>
+
+        <p-column field="name" header="Name"></p-column>
+
+        <p-column field="abbreviation" header="Abbreviation" [style]="{'width': '80px'}"></p-column>
+
+        <p-column field="order" header="Order" [style]="{'width': '80px'}"></p-column>
+
+        <p-column field="updated" header="Updated"></p-column>
+
+        <p-column header="Settings">
+          <template let-league="rowData" pTemplate type="body">
+            <span>{{league.settings|json}}</span>
+          </template>
+        </p-column>
+
+        <p-column header="Sport Id">
+          <template let-col let-league="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="league.sport" [routerLink]="['/sport/sports', league.sport.id]">{{league.sport.id}}</a>
+          </template>
+        </p-column>
+
+        <p-column header="Actions" [style]="{'text-align': 'center', 'width':'80px'}">
+          <template let-league="rowData" pTemplate="body">
+            <button pButton type="button" (click)="onEdit(league.id)" icon="fa-pencil-square-o"></button>
+            <button *ngIf="false" pButton type="button" (click)="onDelete(league.id)" icon="fa-trash" class="ui-button-danger"></button>
+          </template>
+        </p-column>
+
+      </p-dataTable>
+
+      <sn-paginator
+        [page]="page.number"
+        [size]="page.size"
+        [total]="total"
+        (onPageSelected)="goToPage($event)"
+      ></sn-paginator>
+
+    </div>
+
+  </div>
+
+</sn-page>

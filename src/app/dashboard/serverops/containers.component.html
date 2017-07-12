@@ -1,0 +1,100 @@
+<sn-page [title]="'Containers Operations'">
+
+  <div class="ui-g" content="body">
+
+    <div class="ui-g-12">
+      <p-dropdown [options]="filterValues" [(ngModel)]="filterValue" (onChange)="onFilterSelected($event.value)"
+      ></p-dropdown>
+    </div>
+
+    <p-dataTable [value]="filteredContainers" selectionMode="single" [(selection)]="container"
+                 (onRowClick)="onRowSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+
+      <p-header>Containers</p-header>
+
+      <p-column field="name" header="Name"></p-column>
+
+      <p-column field="containerType" header="Type"></p-column>
+
+      <p-column field="active" header="Active"></p-column>
+
+      <p-column field="enabled" header="Enabled"></p-column>
+
+      <p-column header="Components">
+        <template pTemplate="body" let-data="rowData">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-g-nopad" *ngIf="data.type === types.Server">
+              <div class="ui-g-6">Public Host:</div>
+              <div class="ui-g-6">{{data.container.publicHost}}</div>
+              <div class="ui-g-6">Private Host:</div>
+              <div class="ui-g-6">{{data.container.privateHost}}</div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad" *ngIf="data.type === types.DataCenter">
+              <div>Subnets:</div>
+              <ul>
+                <li *ngFor="let subnet of data.container.subnets">{{subnet}}</li>
+              </ul>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad" *ngIf="data.type === types.JobHandler">
+              <div class="ui-g-6">Type:</div>
+              <div class="ui-g-6" *ngIf="data.container.jobType === jobHandlerTypes.DvdEncoding">DVD Encoding</div>
+              <div class="ui-g-6" *ngIf="data.container.jobType === jobHandlerTypes.TvEncoding">TV Encoding</div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad" *ngIf="data.type === types.StbDevice">
+              <div class="ui-g-6">Type:</div>
+              <div class="ui-g-6" *ngIf="data.container.type === stbTypes.DirecTv">DirecTv</div>
+              <div class="ui-g-6" *ngIf="data.container.type === stbTypes.Roku">Roku</div>
+              <div class="ui-g-6" *ngIf="data.container.type === stbTypes.Dish">Dish</div>
+
+              <div class="ui-g-6">Encoder Host:</div>
+              <div class="ui-g-6">{{data.container.encoderHost}}</div>
+
+              <div class="ui-g-6">Device Host:</div>
+              <div class="ui-g-6">{{data.container.deviceHost}}</div>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad" *ngIf="data.type === types.ServerAsset">
+              <div class="ui-g-6">Domain:</div>
+              <div class="ui-g-6">{{data.container.domain}}</div>
+
+              <div class="ui-g-6">IP:</div>
+              <div class="ui-g-6">{{data.container.ip}}</div>
+
+              <div class="ui-g-6">Internal IP:</div>
+              <div class="ui-g-6">{{data.container.ipInternal}}</div>
+
+              <div class="ui-g-6">Ods Id:</div>
+              <div class="ui-g-6">{{data.container.odsId}}</div>
+
+              <div class="ui-g-6">Ods Version:</div>
+              <div class="ui-g-6">{{data.container.odsVersion}}</div>
+
+              <div class="ui-g-6">Machine Pool:</div>
+              <div class="ui-g-6">{{data.container.machinePool}}</div>
+            </div>
+          </div>
+        </template>
+
+      </p-column>
+
+      <p-footer>
+        <button type="button" pButton icon="fa-plus" (click)="addDataCenter()" label="Add Data Center"></button>
+        <button type="button" pButton icon="fa-plus" (click)="addServer()" label="Add Server"></button>
+        <button type="button" pButton icon="fa-plus" (click)="addJobHandler()" label="Add Job Handler"></button>
+        <button type="button" pButton icon="fa-plus" (click)="addStbDevice()" label="Add Stb Device"></button>
+        <button type="button" pButton icon="fa-plus" (click)="addServerAsset()" label="Add Server Asset"></button>
+      </p-footer>
+
+    </p-dataTable>
+
+    <sn-container-dialog-component #containerDialog (onSave)="save($event)"
+                                   (onDelete)="confirmDelete($event)"></sn-container-dialog-component>
+
+    <p-confirmDialog width="425"></p-confirmDialog>
+    <p-growl [value]="message"></p-growl>
+
+  </div>
+</sn-page>

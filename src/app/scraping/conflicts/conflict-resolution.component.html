@@ -1,0 +1,37 @@
+<div *ngIf="ruleCreated">
+  Rule was seccesfully created. You can now resync item.
+</div>
+
+<div *ngIf="loading">
+  Loading resolution options...
+</div>
+
+<div *ngIf="resolution && !ruleCreated && !loading">
+  <span class="label">Resolved Status:</span> {{resolution.resolvedStatus}} <br/>
+  <ul>
+    <li *ngFor="let message of resolution.resolutionMessages">{{message}}</li>
+  </ul>
+
+  <div *ngIf="entityType === 'Player'">
+    <sn-player-conflict-resolver
+      [conflict]="conflict"
+      [suggestions]="suggestions">
+    </sn-player-conflict-resolver>
+  </div>
+
+  <div *ngIf="entityType === 'Game'">
+    <sn-game-conflict-resolver
+      [conflict]="conflict"
+      [suggestions]="suggestions">
+    </sn-game-conflict-resolver>
+  </div>
+
+  <div *ngIf="entityType === 'GameLineup'">
+    <sn-lineup-conflict-resolver
+      [conflict]="conflict"
+      [resolution]="resolution">
+    </sn-lineup-conflict-resolver>
+  </div>
+
+</div>
+

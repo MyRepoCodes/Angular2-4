@@ -1,0 +1,43 @@
+<div *ngIf="!creatingRule">
+  <h3>Player Resolution</h3>
+
+  <div *ngIf="ruleCreated">
+    Player rule was succesfully created. You can now resync item.
+  </div>
+
+  <div *ngIf="!ruleCreated">
+    <div class="tableContainer">
+      <p-dataTable [value]="suggestions" selectionMode="single" [(selection)]="selectedSuggestion">
+        <p-column field="iid" header="IID"></p-column>
+        <p-column field="firstName" header="First Name"></p-column>
+        <p-column field="lastName" header="Last Name"></p-column>
+        <p-column field="birthDate" header="Birth Date"></p-column>
+        <p-column field="weight" header="Weight"></p-column>
+        <p-column field="height" header="Height"></p-column>
+        <p-column field="college" header="College"></p-column>
+        <p-column field="bats" header="Batting Arm"></p-column>
+        <p-column field="throws" header="Throwing Arm"></p-column>
+      </p-dataTable>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-6">
+        <button pButton label="Create Rule" (click)="createRule()"></button>
+      </div>
+      <div class="ui-g-6">
+        <button pButton label="Create IID Hint Rule" (click)="createIidHintRule()"
+                [disabled]="!selectedSuggestion"></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="creatingRule">
+  <sn-rule-editor
+    [prefill]="rule"
+    [selectedType]="'Player'"
+    (saved)="onRuleSaved()"
+    (canceled)="back()"
+  ></sn-rule-editor>
+</div>

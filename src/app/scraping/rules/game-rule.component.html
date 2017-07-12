@@ -1,0 +1,78 @@
+<div [formGroup]="form">
+
+  <div class="ui-g">
+
+    <div formGroupName="gameTeams">
+      <div class="ui-g-4" [class.included]="awayTeam.value">Away Team:</div>
+      <div class="ui-g-8">
+        <input #awayTeam pInputText type="text" formControlName="awayTeam">
+      </div>
+
+      <div class="ui-g-4" [class.included]="homeTeam.value">Home Team:</div>
+      <div class="ui-g-8">
+        <input #homeTeam pInputText type="text" formControlName="homeTeam">
+      </div>
+    </div>
+
+    <div class="ui-g-4" [class.included]="doubleHeader.value">Double Header:</div>
+    <div class="ui-g-8">
+      <p-selectButton [options]="doubleHeaderOptions" #doubleHeader formControlName="doubleHeader"></p-selectButton>
+    </div>
+
+    <div class="ui-g-12 ui-g-nopad" *ngIf="isResolution">
+
+      <div formGroupName="gameTime">
+        <div class="ui-g-4" [class.included]="utcDate.value">Game UTC:</div>
+        <div class="ui-g-8">
+          <p-calendar #utcDate formControlName="utcDate" showTime="showTime" hourFormat="24"></p-calendar>
+        </div>
+      </div>
+
+      <div class="ui-g-4" [class.included]="iidHint.value">IID Hint:</div>
+      <div class="ui-g-8">
+        <input #iidHint pInputText type="text" formControlName="iidHint">
+      </div>
+
+    </div>
+
+    <div class="ui-g-nopad" *ngIf="!isResolution">
+
+      <div formGroupName="gameTime">
+        <div class="ui-g-4" [class.included]="utcDate.value">Game UTC:</div>
+        <div class="ui-g-8">
+          <p-calendar #utcDate formControlName="utcDate" showTime="showTime" hourFormat="24"></p-calendar>
+        </div>
+
+        <div class="ui-g-4" [class.included]="gameDate.value">Game Date:</div>
+        <div class="ui-g-8">
+          <p-calendar #gameDate formControlName="gameDate"></p-calendar>
+        </div>
+      </div>
+      <div formGroupName="score">
+
+        <div class="ui-g-4" [class.included]="ar.value && ah.value && ae.value">Away Team Score:</div>
+        <div class="ui-g-7">
+          <span>
+            R <input pInputText type="text" class="score-input" formControlName="awayTeamRuns" #ar>
+            H <input pInputText type="text" class="score-input" formControlName="awayTeamHits" #ah>
+            E <input pInputText type="text" class="score-input" formControlName="awayTeamErrors" #ae>
+          </span>
+        </div>
+
+
+        <div class="ui-g-4" [class.included]="hr.value && hh.value && he.value">Home Team Score:</div>
+        <div class="ui-g-7">
+          <span>
+            R <input pInputText type="text" class="score-input" formControlName="homeTeamRuns" #hr>
+            H <input pInputText type="text" class="score-input" formControlName="homeTeamHits" #hh>
+            E <input pInputText type="text" class="score-input" formControlName="homeTeamErrors" #he>
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,123 @@
+<div content="body" class="ui-g" style="background: #ffffff">
+  <div class="ui-g " *ngIf="isTickets">
+    <form [formGroup]="form">
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <input pInputText type="text" class="ui-g-12" [(ngModel)]="ticket.name" [(formControl)]="form.controls.name"
+                 placeholder="Name">
+        </div>
+        <div class="ui-g-3">
+          <input pInputText type="text" class="ui-g-12" [(ngModel)]="ticket.assignee"
+                 [(formControl)]="form.controls.assignee" placeholder="Assignee">
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown class="select-dropdown" [options]="templates" [(formControl)]="form.controls.template"
+                      [(ngModel)]="ticket.template"></p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown [options]="links" class="select-dropdown" [(formControl)]="form.controls.link" [disabled] = "isLinkDisable"
+                      [(ngModel)]="ticket.link"></p-dropdown>
+        </div>
+
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <p-dropdown [options]="prioritys" class="select-dropdown" [(formControl)]="form.controls.priority"
+                      [(ngModel)]="ticket.priority"></p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown class="select-dropdown" [options]="groups" [(formControl)]="form.controls.group"
+                      [(ngModel)]="ticket.group"></p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown class="select-dropdown" [options]="status" [(formControl)]="form.controls.status"
+                      [(ngModel)]="ticket.status"></p-dropdown>
+        </div>
+        <div class="ui-g-4">
+          <button pButton type="button" label="Search" (click)="search(ticket)"></button>
+          <button pButton type="button" label="Clear Filter" (click)="clearFilter()"></button>
+        </div>
+      </div>
+    </form>
+    <div class="ui-g-12">
+      <p-dataTable *ngIf="! loading" [value]="tickets">
+        <p-header>
+          <sn-table-header #header [name]="'Ticket List'" (add)="onAdd(null)"></sn-table-header>
+        </p-header>
+        <p-column [hidden]="! header.isIdsVisible()" field="id" header="TicketId">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a>{{ticket[col.field]}}</a>
+          </template>
+        </p-column>
+        <!--<p-column field="_id" header="Id"></p-column>-->
+        <p-column field="name" header="Name"></p-column>
+        <p-column header="Creator">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="ticket.creator">{{ticket.creator.name }} </a>
+          </template>
+        </p-column>
+        <p-column header="Assignee">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="ticket.assignee">{{ticket.assignee.name  }} </a>
+
+            <button *ngIf="ticket.creator.name !== currentUser.username && !ticket.assignee"  pButton type="button" label ="Claim"  (click) = "assingUser(ticket.name)">
+
+            </button>
+            <!--*ngIf="ticket.assignee && ticket.assignee.name !== currentUser.username && ticket.creator.name !== currentUser.username"-->
+          </template>
+        </p-column>
+        <p-column field="description" header="Description"></p-column>
+        <p-column field="status" header="Status"></p-column>
+        <p-column field="title" header="Title"></p-column>
+        <p-column field ="priority" header="Priority"></p-column>
+        <p-column header="Link">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <div *ngFor="let item of ticket.links;">
+              {{item.type}}
+            </div>
+          </template>
+        </p-column>
+        <p-column header="Created On">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="ticket.createdAt">{{ticket.createdAt | date: 'dd/MM/yyyy'}} </a>
+          </template>
+        </p-column>
+        <p-column header="Template">
+          <template let-col let-ticket="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="ticket.template">{{ticket.template.type }} </a>
+          </template>
+        </p-column>
+        <p-column header="Actions" [style]="{'text-align': 'center', 'width':'120px'}">
+          <template let-ticket="rowData" pTemplate="body">
+            <button pButton type="button" (click)="onEdit(ticket)" icon="fa-pencil-square-o"></button>
+            <!--<button *ngIf="false" pButton type="button" (click)="onDelet.lie(sport.id)" icon="fa-trash"&ndash;&gt;-->
+            <!--class="ui-button-danger"></button>-->
+            <button pButton type="button" (click)="onComment(ticket.name)" icon="fa fa-comments"></button>
+            <!--<button pButton type="button" icon=" fa fa-ellipsis-v"></button>-->
+            <!--<p-tieredMenu styleClass="status-popup" #menu [model]="items" [popup]="true" (click)="toggle($event,ticket.name)">-->
+
+            <!--</p-tieredMenu>-->
+            <!--<button #btn type="button" pButton icon="fa fa-ellipsis-v" (click)="menu.toggle($event)"></button>-->
+          </template>
+        </p-column>
+
+      </p-dataTable>
+      <sn-paginator *ngIf="! loading"
+                    [page]="page.number"
+                    [size]="page.size"
+                    [total]="total"
+                    (onPageSelected)="goToPage($event)"></sn-paginator>
+    </div>
+  </div>
+  <div class="ui-g-12" *ngIf="isComment">
+    <sn-comments [filter]="commentFilter">
+
+    </sn-comments>
+
+  </div>
+  <div class="ui-g" *ngIf="isTicket">
+    <sn-ticket [filter]="ticketFilter">
+
+    </sn-ticket>
+  </div>
+</div>

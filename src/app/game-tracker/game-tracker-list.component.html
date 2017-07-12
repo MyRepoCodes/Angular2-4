@@ -1,0 +1,277 @@
+﻿<div class="ui-g-12 ui-g-nopad" *ngIf="error$ | async">
+  <div class="danger">Error loading games</div>
+</div>
+<sn-filter #filter (onSearch)="onRefreshClicked()">
+  <p-panel header="Game Filters" [toggleable]=true collapsed=collapsed>
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <p-dropdown [style]="{'width':'100%'}"
+                      [disabled]="!(sportLoaded$ | async)"
+                      [options]="sports$ | async"
+                      [ngModel]="sport$ | async"
+                      (onChange)="selectionSportChanged($event.value)"
+                      [autoWidth]="true"
+                      [filter]="true"></p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="leagueLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(leagueLoaded$ | async)"
+                         [options]="leagues$ | async"
+                         [ngModel]="league$ | async"
+                         (onChange)="selectionLeagueChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="conferenceLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(conferenceLoaded$ | async)"
+                         [options]="conferences$ | async"
+                         [ngModel]="conference$ | async"
+                         (onChange)="selectionConferenceChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="divisionLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(divisionLoaded$ | async)"
+                         [options]="divisions$ | async"
+                         [ngModel]="division$ | async"
+                         (onChange)="selectionDivisionChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="teamLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(teamLoaded$ | async)"
+                         [options]="teams$ | async"
+                         [ngModel]="team$ | async"
+                         (onChange)="selectionTeamChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="competitionsLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(competitionLoaded$ | async)"
+                         [options]="competitions$ | async"
+                         [ngModel]="competition$ | async"
+                         (onChange)="selectionCompetitionChanged($event.value)">
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="seasonLabel"
+                         [style]="{'width':'100%'}"
+                         [disabled]="!(seasonLoaded$ | async)"
+                         [options]="seasons$ | async"
+                         [ngModel]="season$ | async"
+                         (onChange)="selectionSeasonChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown [style]="{'width':'100%'}"
+                      [options]="jobTypes"
+                      [ngModel]="jobTypesModel$ | async"
+                      (onChange)="selectionJobTypeChanged($event.value)"
+                      [autoWidth]="true">
+          </p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="jobStatusLabel"
+                         [style]="{'width':'100%'}"
+                         [options]="jobStatuses"
+                         [ngModel]="jobStatusesModel$ | async"
+                         (onChange)="selectionJobStatusChanged($event.value)">
+          </p-multiSelect>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown [style]="{'width':'100%'}"
+                      [options]="playsByPlay"
+                      [ngModel]="pbpModel$ | async"
+                      (onChange)="selectionLineupChanged($event.value)"
+                      [autoWidth]="true">
+          </p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-dropdown [style]="{'width':'100%'}"
+                      [options]="gameOwners"
+                      [ngModel]="gameOwner$ | async"
+                      (onChange)="selectionGamesOwnerChanged($event.value)"
+                      [autoWidth]="true">
+          </p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <p-multiSelect [defaultLabel]="videoSourceLabel"
+                         [style]="{'width':'100%'}"
+                         [options]="videoSourceTypes"
+                         [ngModel]="videoSource$ | async"
+                         (onChange)="selectionVideoSourceChanged($event.value)">
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-12">
+
+        <div class="ui-g-3">
+          From:
+          <p-calendar
+            [disabled]="(dateSelectionModel$ | async) !== dateRangeEnabled"
+            [ngModel]="fromDate$ | async"
+            [placeholder]="'Start date'"
+            [showIcon]="true"
+            (onSelect)="selectionChanged('from', $event)"
+            (keypress)="onKeyDownCalendar('from', $event)"
+          ></p-calendar>
+        </div>
+
+        <div class="ui-g-3">
+          To:
+          <p-calendar
+            [disabled]="(dateSelectionModel$ | async) !== dateRangeEnabled"
+            [ngModel]="toDate$ | async"
+            [placeholder]="'End date'"
+            [showIcon]="true"
+            (onSelect)="selectionChanged('to', $event)"
+            (keypress)="onKeyDownCalendar('to', $event)"
+          ></p-calendar>
+        </div>
+
+        <div class="ui-g-2">
+          <p-dropdown
+            [style]="{'width':'100%'}"
+            [options]="dateSelections"
+            [ngModel]="dateSelectionModel$ | async"
+            (onChange)="selectionDateIntervalChanged($event.value)"
+            [autoWidth]="true">
+          </p-dropdown>
+        </div>
+
+        <div class="ui-g-2">
+          <p-dropdown
+            [style]="{'width':'100%'}"
+            [options]="refreshIntervals"
+            [ngModel]="refreshIntervals[0]"
+            (onChange)="onSelectItem($event)"
+            [autoWidth]="true">
+          </p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <button pButton type="button" label="Refresh List" (click)="filter.onSearchClicked($event)"
+                  style="width: 100%;"></button>
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-10"></div>
+        <div class="ui-g-2">
+          <button pButton type="button" label="Clear Filters" (click)="clearAllFilters()" style="width: 100%;"></button>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</sn-filter>
+<div class="ui-g-12 ui-g-nopad">
+
+  <p-dataTable #dt class="ui-widget-header gamelist" [value]="games"
+               [totalRecords]="total$ | async" [rows]="20" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[20,50,100]"
+               expandableRows="true" resizableColumns="true"
+               [editable]="true" [scrollable]="true" scrollWidth="100%"
+               (onEditComplete)="editCompleted($event)"
+               (onEditCancel)="editCanceled($event)"
+               (onEditInit)="editInitiated($event)"
+               [sortField]="sort$?.field | async"
+               [sortOrder]="sort$?.order | async"
+               [lazy]="true" (onLazyLoad)="loadGameTrackers($event)">
+
+    <template let-game pTemplate="rowexpansion">
+      <sn-game-status [game]="game"></sn-game-status>
+    </template>
+
+    <p-header>
+      <div class="ui-g-7 GameToggler" style="padding-top : 0;">
+        <p-multiSelect [options]="columnOptions" [(ngModel)]="cols" (onChange)="onColumnListChange($event.value)"></p-multiSelect>
+      </div>
+      <sn-table-header #header [name]="'Game List'" (add)="onAdd()">
+        <input type="text" pInputText [(ngModel)]="gameIid" (keydown)="onSearchIidKeyPressed($event)" style="float:left;" />
+        &nbsp;
+        <button pButton type="button" label="Search game by iid" (click)="searchGameByIid()" style="float:left;"></button>
+      </sn-table-header>
+    </p-header>
+
+    <p-column expander="true" styleClass="col-icon" [style]="{'width':'40px'}"></p-column>
+    <p-column field="index" header="" [style]="{'width':'40px'}"></p-column>
+    <p-column *ngIf=" visibleColumns['Id']" ield="Id" header="ID" [style]="{'width':'180px'}">
+      <template let-col let-game="rowData" let-ri="rowIndex" pTemplate="body">
+        <a [routerLink]="['/sport/games', game.id]">{{game.id}}</a>
+      </template>
+    </p-column>
+    <p-column field="iid" header="IID" [style]="{'width':'80px'}"></p-column>
+    <p-column field="id" header="Actions" [style]=" { 'width' :'125px' }">
+      <template let-col let-game="rowData" let-ri="rowIndex" pTemplate="body">
+        <a title="Game Edit" [routerLink]="['/sport/games', game.id]" routerLinkActive="active" style="color: blue;">Edit</a>|
+        <a title="Game Details" [routerLink]="['/sport/games', game.id, 'details']" style="color: blue;">Details</a> |
+        <a title="Save Row Changes" (click)="onSaveRowChanges(game)" style="color: blue; cursor: pointer;">Save</a>
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['name']" field="name" header="Name" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+    <p-column *ngIf=" visibleColumns['viewDate']" field="viewDate" header="Date" [style]="{'width':'100px'}" [sortable]="true">
+      <template let-col let-game="rowData" let-ri="rowIndex" pTemplate="body">
+        {{game.viewDate}}
+        <br />
+        {{game.viewTime}}
+      </template>
+    </p-column>
+    <p-column *ngIf="visibleColumns['homeTeam.name']"  field="homeTeam.name" header="Home" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf="visibleColumns['awayTeam.name']" field="awayTeam.name" header="Away" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf="visibleColumns['league.name']" field="league.name" header="League" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf="visibleColumns['competition.name']" field="competition.name" header="Competition" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf="visibleColumns['overallJobsStatus']" field="overallJobsStatus" header="Next Step" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf="visibleColumns['server']" field="server" header="Server" sortable="true" [style]="{'width':'150px'}">
+      <template let-game="rowData" pTemplate="body">
+        {{game.encodingServer?.name}}
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['dueDateValue']" field="dueDateValue" header="Due Date" [editable]="true" [sortable]="true" [style]="{'overflow':'visible', 'width':'200px'}">
+      <template let-col let-game="rowData" pTemplate="body">
+        {{game[col.field]|date:'shortDate' }}
+      </template>
+      <template let-col let-game="rowData" pTemplate="editor">
+        <p-calendar [ngModel]="game[col.field]" (onSelect)="dueDateSelected(game, $event)"></p-calendar>
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['priority']" field="priority" header="Priority" [editable]="true" [style]="{'width':'100px'}" sortable="true">
+      <template let-col let-game="rowData" pTemplate="body">
+        {{game[col.field]}}
+      </template>
+      <template let-col let-game="rowData" pTemplate="editor">
+        <p-spinner [ngModel]="game[col.field]" (ngModelChange)="prioritySelected(game, $event)" [min]="0" [max]="999"></p-spinner>
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['videoSource']" field="videoSource" header="Video Source" sortable="true" [style]="{'width':'100px', 'overflow': 'visible'}" [editable]="true">
+      <template let-game="rowData" pTemplate="body">
+        {{game.videoSource}}
+      </template>
+      <template let-game="rowData" pTemplate="editor">
+        <p-dropdown [options]="videoSourceTypes" [ngModel]="game.videoSource" (ngModelChange)="videoSourceSelected(game, $event)" [style]="{'width':'100px'}"></p-dropdown>
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['desiVersion']" field="desiVersion" header="Desi Version" sortable="true" [style]="{'width':'100px'}" [editable]="true">
+      <template let-game="rowData" pTemplate="body">
+        {{game.desiVersion}}
+      </template>
+      <template let-game="rowData" pTemplate="editor">
+        <p-spinner [ngModel]="game.desiVersion" (ngModelChange)="desiVersionSelected(game, $event)" [min]="0" [max]="999"></p-spinner>
+      </template>
+    </p-column>
+    <p-column *ngIf=" visibleColumns['missionId']"  field="missionId" header="Mission ID" sortable="true" [style]="{'width':'100px'}"></p-column>
+    <p-column  *ngIf=" visibleColumns['missionStatus']" field="missionStatus" header="Mission Status" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf=" visibleColumns['p1Logger']" field="p1Logger" header="P1 Logger" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf=" visibleColumns['p2Logger']" field="p2Logger" header="P2 Logger" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+    <p-column *ngIf=" visibleColumns['p3Logger']" field="p3Logger" header="P3 Logger" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+
+  </p-dataTable>
+</div>

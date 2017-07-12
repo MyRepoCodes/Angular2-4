@@ -1,0 +1,48 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <div *ngIf="!venues && !loading">Venue not found.</div>
+    <form *ngIf="venues" [formGroup]="form"  class="ui-g-12">
+      <div class="ui-g-2">
+        <sn-select-sport [sport]="sportId"
+                         (sportChanged)="sportChanged($event)"></sn-select-sport>
+      </div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-2"></div>      
+      <div class="ui-g-4">
+        <button pButton type="button" label="Search" (click)="search()" [disabled]=" ! form.valid "></button>
+        <button pButton type="button" label="Clear Filter" (click)="clearFilter()" [disabled]=" ! form.valid "></button>
+      </div>
+    </form>
+ 
+  <p-dataTable *ngIf="! loading" [value]="venues">
+    <p-header>
+      <sn-table-header #header [name]="'Venues List'" (add)="onAdd()"></sn-table-header>
+    </p-header>
+    <p-column [hidden]="! header.isIdsVisible()" field="id" header="VenuesId">
+    </p-column>
+    <p-column field="iid" header="IID" [style]="{'width': '80px'}"></p-column>
+    <p-column field="name" header="Venue Name"></p-column>
+    <p-column field="location" header="Venue location"></p-column>
+
+    <p-column header="sport">
+      <template let-col let-venue="rowData" let-ri="rowIndex" pTemplate type="body">
+        <a *ngIf="venue.sport" [routerLink]="['/sport/sports', venue.sport.id]">{{venue.sport.id}}</a>
+      </template>
+    </p-column>
+    <p-column header="Actions" [style]="{'text-align': 'center', 'width':'80px'}">
+      <template let-venue="rowData" pTemplate="body">
+        <button pButton type="button" (click)="onEdit(venue.id)" icon="fa-pencil-square-o"></button>
+        <button *ngIf="false" pButton type="button" (click)="onDelete(venue.id)" icon="fa-trash" class="ui-button-danger"></button>
+      </template>
+    </p-column>
+  </p-dataTable>
+  <sn-paginator *ngIf="! loading"
+                [page]="page.number"
+                [size]="page.size"
+                [total]="total"
+                style="width:100%"
+                (onPageSelected)="goToPage($event)"></sn-paginator>
+  </div>
+</sn-page>

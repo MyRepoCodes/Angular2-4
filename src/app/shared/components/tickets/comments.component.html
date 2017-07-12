@@ -1,0 +1,118 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <div class="ui-g-12">
+      <button pButton type="button" (click)="onBack()" label="Back " class="GreenButton"></button>
+    </div>
+    <div class="ui-g-12">
+      <div class=" ticket-info">
+        <div class="ticket-blc">
+          <div *ngIf="ticket" class="ticket-box ticket-box2">
+            <h2>Ticket Information</h2>
+            <ul class="info2">
+              <li><label> Name:</label> <span>{{ticket.name}}</span></li>
+              <li><label> Title:</label> <span>{{ticket.title}}</span></li>
+              <li><label> Creator:</label> <span>{{ticket.creator.name}}</span></li>
+              <li><label> Template:</label> <span>{{ticket.template.type}}</span></li>
+              <li><label> Status:</label> <span>{{ticket.status}}</span></li>
+              <li *ngIf="ticket.priority"><label>Priority:</label> <span>{{ticket.priority}}</span></li>
+              <li><label>CreatedAt:</label> <span>{{ticket.createdAt  | date: 'dd/MM/yyyy'}}</span></li>
+              <li *ngIf="ticket.assignee"><label>Assignee:</label> <span>{{ticket.assignee.name}}</span></li>
+              <ul *ngFor="let items of ticket.links ">
+                <li><label> Ref:</label> <span>{{items.refId}}</span></li>
+                <li><label> Type:</label> <span>{{items.type}}</span></li>
+              </ul>
+              <li class="full-width"><label> Description:</label> <span>{{ticket.description}}</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ui-panel-content-wrapper comment-block">
+        <div class="ui-panel-content ui-widget-content" style=" box-shadow: 0 0 4px #bbb;">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+            <input type="hidden" [(ngModel)]="ticketId" [(formControl)]="form.controls.ticketId">
+            <div class="ui-g form-group">
+              <div class="ui-g-12 ">
+                <div class="user-textarea">
+              <textarea autoresize="autoResize" pinputtextarea="" ng-reflect-auto-resize="autoResize"
+                        placeholder="Comment"
+                        [(ngModel)]="commenttext"
+                        autoResize="autoResize"
+                        class="ng-untouched ng-pristine ng-valid ui-inputtext ui-corner-all ui-state-default ui-widget"
+                        [formControl]="form.controls.commenttext">
+               </textarea>
+                </div>
+                <div class="ui-g-4">
+                  <div class="ui-message ui-messages-error ui-corner-all"
+                       *ngIf="!form.controls.commenttext.valid && form.controls.commenttext.dirty">
+                    <i class="fa fa-close"></i>
+                    Comment is required
+                  </div>
+                </div>
+              </div>
+              <button pButton type="submit" label="Add Comment" class="BlueButton" [disabled]="! form.valid"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div *ngFor="let item of comments; let i = index" class="ui-panel-content-wrapper comment-block">
+        <div class="ui-panel-content ui-widget-content" style=" box-shadow: 0 0 4px #bbb;">
+          <div class="comment-head clearfix">
+            <h2><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{item.commentedBy.name}} <label>{{item.createdAt
+              | date: 'dd/MM/yyyy'}}</label>
+            </h2>
+          </div>
+          <div class="comment-txt" (click)="onClick(i,item.commentedBy.name)" *ngIf="!item.isDisplay">
+            <p>{{item.body}} </p>
+          </div>
+          <div class="user-textarea" *ngIf="item.isEdit">
+            <textarea autoresize="autoResize" pinputtextarea="" ng-reflect-auto-resize="autoResize"
+                      [(ngModel)]="item.body"
+                      class="ng-untouched ng-pristine ng-valid ui-inputtext ui-corner-all ui-state-default ui-widget">
+            </textarea>
+            <div class="ui-g-12">
+              <button pButton type="button" label="Update" [disabled]="item.body===''"
+                      (click)="onUpdate(item.body,item._id,i)"></button>
+              <button pButton type="button" label="Cancel" (click)="onCancel(i)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-history-blc" *ngIf="history">
+        <h2>Ticket History</h2>
+        <div *ngFor="let item of history">
+          <div class="ticket-rw">
+            <ul>
+              <li  *ngIf="item.changedBy!== undefined ">
+                <label>Changed By:</label>
+                <span>{{item.changedBy.name}}</span>
+              </li>
+              <li *ngIf="item.type !== undefined ">
+                <label> Stataus Type:</label>
+                <span>  {{item.type}} </span>
+              </li>
+              <li *ngIf="item.status && item.status.from !== undefined || null ">
+                <label> Status From:</label>
+                <span>{{item.status.from}}</span>
+              </li>
+              <li *ngIf="item.status !== undefined">
+                <label> Status To:</label>
+                <span>{{item.status.to}}</span>
+              </li>
+              <li *ngIf="item.assignee !== undefined ">
+                <label> Assigned By:</label>
+                <span>{{item.assignee.assignedBy.name}}</span>
+              </li>
+              <li *ngIf="item.assignee !== undefined">
+                <label> Assigned To:</label>
+                <span>{{item.assignee.assignedTo.name}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</sn-page>

@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">Sport IID:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="sportIid">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">League IID:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="leagueIid">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">Scraper ID:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="scraperId">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">Scraper URL:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="scraperUrl">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">Batch:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="batch">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">SubBatch:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="subBatch">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-4">Message:</div>
+      <div class="ui-g-8">
+        <input type="text" pInputText formControlName="message">
+      </div>
+    </div>
+
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-6">
+      </div>
+      <div class="ui-g-6">
+        <button pButton label="Submit" (click)="onSubmit()" [disabled]="!form.valid"></button>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+

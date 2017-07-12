@@ -1,0 +1,125 @@
+<sn-page [title]="'Compare Tool'">
+
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+
+  <div class="ui-g" content="body">
+
+    <p-dialog [(visible)]="videoDisplay" modal="modal" showEffect="fade" [width]="620" header="{{videoDialogHeader}}"
+              (onBeforeHide)="hideVideoDialog()">
+    </p-dialog>
+
+    <sn-compare-tool-filter #filter [params]="params" class="ui-g-12">
+
+        <div class="ui-g-2">
+          <span>Trainee</span>
+
+          <p-dropdown [style]="{width: '100%'}" filter="filter"
+            [options]="traineesItems"
+            [ngModel]="selectedTrainee"
+            (onChange)="traineeSelected($event.value)"
+          ></p-dropdown>
+        </div>
+
+        <div class="ui-g-5">
+          <span>Game</span>
+
+          <p-dropdown [style]="{width: '100%'}" filter="filter"
+            [options]="gameItems"
+            [ngModel]="selectedGame"
+            (onChange)="gameSelected($event.value)"
+          ></p-dropdown>
+        </div>
+
+        <div class="ui-g-4">
+          <template [ngIf]="trainee">
+            <div>Phase: {{trainee.phase}} | Course: {{trainee.course}}</div>
+            <div>Start Date: {{trainee.startDate | date:shortDate}}</div>
+            <div>EndDate: {{trainee.endDate | date:shortDate}}</div>
+          </template>
+        </div>
+
+        <div class="ui-g-1">
+          <button pButton type="button" label="Search" (click)="filter.search()"></button>
+        </div>
+
+    </sn-compare-tool-filter>
+
+    <div class="ui-g-12 ui-g-nopad" *ngIf="progress">{{progress}}</div>
+
+    <div *ngIf="data.length" class="ui-g-12 ui-g-nopad">
+
+      <p-dataTable #dt [value]="data" [rows]="50" [paginator]="true" [rowsPerPageOptions]="[10,20,50]">
+
+        <header>
+          <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV"
+                    (click)="dt.exportCSV()" style="float:left; width: 90px;"
+            ></button>
+          </div>
+        </header>
+
+        <p-column field="timeStr" header="Time" [style]="{'width':'150px'}">
+          <template let-col let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+            <div [ngSwitch]="row.trainee.timeStatus">
+              <div *ngSwitchCase="'late'">
+                Trainee time: <div [ngStyle]="{'color': 'red'}">{{row.trainee.time}}</div>
+                Correct time: <div *ngIf="row.correct" [ngStyle]="{'color': 'green'}">{{row.correct.time}}</div>
+              </div>
+              <div *ngSwitchCase="'early'">
+                Trainee time: <div [ngStyle]="{'color': 'red'}">{{row.trainee.time}}</div>
+                Correct time: <div *ngIf="row.correct" [ngStyle]="{'color': 'green'}">{{row.correct.time}}</div>
+              </div>
+              <div *ngSwitchDefault>
+                Trainee time: <div>{{row.trainee.time}}</div>
+                Correct time: <div *ngIf="row.correct">{{row.correct.time}}</div>
+              </div>
+            </div>
+          </template>
+        </p-column>
+
+        <p-column field="traineeStr" header="Trainee" [style]="{'overflow':'visible'}"> <!-- filterMatchMode="startsWith">-->
+          <template let-col let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+            <template ngFor let-item [ngForOf]="row.trainee.checked" let-last="last">
+              <span [ngStyle]="{'color': item.color }">{{item.element}}</span>
+              <span *ngIf="! last"> &gt; </span>
+            </template>
+          </template>
+        </p-column>
+
+        <p-column field="correctStr" header="Correct" [style]="{'overflow':'visible'}"> <!-- filterMatchMode="startsWith">-->
+          <template let-col let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+            <template ngFor let-item [ngForOf]="row.correct.checked" let-last="last">
+              <span [ngStyle]="{'color': item.color }">{{item.element}}</span>
+              <span *ngIf="! last"> &gt; </span>
+            </template>
+          </template>
+        </p-column>
+
+        <p-column field="notesStr" header="Notes" [style]="{'width':'300px'}">
+          <template let-col let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+            <div>Correct row index: {{row.correctIndex}}</div>
+            <div>Trainee row index: {{row.traineeIndex}}</div>
+            <div>Time: {{row.trainee.timeStatus}}</div>
+            <div *ngIf="row.missed.length">Missed:
+              <span *ngFor="let e of row.missed; let last = last">
+              {{e}}<span *ngIf="! last">,&nbsp;</span>
+            </span>
+            </div>
+          </template>
+        </p-column>
+
+        <p-column field="urlStr" header="Video" [style]="{'width':'100px'}">
+          <template let-col let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a target="_blank" [attr.href]="linkToVideo(getStreamPosition(row))">
+              <i class="fa fa-external-link"></i>&nbsp;Open Video
+            </a>
+          </template>
+        </p-column>
+
+      </p-dataTable>
+
+    </div>
+
+  </div>
+
+</sn-page>

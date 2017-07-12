@@ -1,0 +1,100 @@
+<form [formGroup]="form">
+  <div class="ui-g">
+
+    <div class="ui-g-12">
+      <div class="ui-g-1">Active:</div>
+      <div class="ui-g-1">
+        <p-checkbox formControlName="enabled" binary="true"></p-checkbox>
+      </div>
+      <div class="ui-g-1">Entity:</div>
+      <div class="ui-g-3">
+        <p-dropdown [options]="entityTypeOptions" [ngModel]="selectedType" [style]="{width: '100%'}" [disabled]="!createMode"
+                    formControlName="entity" #entityType></p-dropdown>
+      </div>
+      <div *ngIf="entityType.value === 'Player'">
+        <div class="ui-g-2">Select Team:</div>
+        <div class="ui-g-3">
+          <p-dropdown [options]="teamsOptions" [style]="{width: '100%'}" [disabled]="!teamsOptions"
+                     formControlName="scraperUrl" filter="filter" (onChange)="onTeamSelected($event.value)"></p-dropdown>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ui-g-2">Scrapper URL:</div>
+    <div class="ui-g-4">
+      <input type="text" pInputText formControlName="scraperUrl" #scraperUrl>
+    </div>
+    <div class="ui-g-6">
+      <span *ngIf="!scraperUrl.value" class="error-text">Saving a rule without a scraper URL is strongly discouraged.</span>
+    </div>
+
+
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-6">
+        <b>Matching Rule</b>
+      </div>
+      <div class="ui-g-6">
+        <b>Resolution Rule</b>
+      </div>
+    </div>
+
+    <div *ngIf="entityType.value === 'Player'" class="ui-g-12">
+
+      <div class="ui-g-6">
+        <sn-player-rule [formGroupRef]="form.controls.matchRules" [data]="item.matchRules"></sn-player-rule>
+      </div>
+
+      <div class="ui-g-6">
+        <sn-player-rule [isResolution]="true" [formGroupRef]="form.controls.resolutionRules" [data]="item.resolutionRules"></sn-player-rule>
+      </div>
+
+    </div>
+
+    <div *ngIf="entityType.value === 'Game'" class="ui-g-12">
+
+      <div class="ui-g-6">
+        <sn-game-rule [formGroupRef]="form.controls.matchRules" [data]="item.matchRules"></sn-game-rule>
+      </div>
+
+      <div class="ui-g-6">
+        <sn-game-rule  [formGroupRef]="form.controls.resolutionRules" [data]="item.resolutionRules" [isResolution]="true"></sn-game-rule>
+      </div>
+
+    </div>
+
+    <div *ngIf="entityType.value === 'Team'" class="ui-g-12">
+
+      <div class="ui-g-6">
+        <sn-team-rule [formGroupRef]="form.controls.matchRules" [data]="item.matchRules"></sn-team-rule>
+      </div>
+
+      <div class="ui-g-6">
+        <sn-team-rule  [formGroupRef]="form.controls.resolutionRules" [data]="item.resolutionRules" [isResolution]="true" [teamsOptions]="teamNamesOptions"></sn-team-rule>
+      </div>
+
+    </div>
+
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-6">
+        <span class="ui-message-error">
+          {{error}}
+        </span>
+      </div>
+      <div class="ui-g-6">
+        <div class="ui-g-6">
+          <button pButton label="Save" (click)="onSaveButtonClick()"></button>
+        </div>
+        <div class="ui-g-6">
+          <button pButton label="Cancel" (click)="onCancelButtonClick()"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-g-12" *ngIf="!form.valid">
+      <p class="error-text" *ngFor="let error of formErrorsAsArray()">{{error}}</p>
+    </div>
+
+  </div>
+
+</form>

@@ -1,0 +1,79 @@
+﻿<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <div *ngIf="!teams && !loading">Team not found.</div>
+    <form *ngIf="teams" [formGroup]="form" class="ui-g-12">
+      <div class="ui-g-2">
+        <sn-select-sport [sport]="sportId"
+                         (sportChanged)="sportChanged($event)"></sn-select-sport>
+      </div>
+      <div class="ui-g-2">
+        <sn-select-league [sport]="sportId"
+                          [league]="leagueId"
+                          (leagueChanged)="leagueChanged($event)"></sn-select-league>
+      </div>
+      <div class="ui-g-2">
+        <sn-select-division [league]="leagueId" [division]="divisionId"
+                            (divisionChanged)="divisionChanged($event)">
+        </sn-select-division>
+      </div>
+      <div class="ui-g-2">
+        <sn-select-conference [league]="leagueId" [conference]="conferenceId"
+                              (conferenceChanged)="conferenceChanged($event)"></sn-select-conference>
+      </div>
+      <div class="ui-g-4">
+        <button pButton type="button" (click)="search()" label="Search" [disabled]="! form.valid"></button>
+        <button pButton type="button" label="Clear Filter" (click)="clearFilter()" [disabled]=" ! form.valid "></button>
+      </div>
+
+    </form>
+    <p-dataTable *ngIf="! loading" [value]="teams">
+      <p-header>
+        <sn-table-header #header [name]="'Teams List'" (add)="onAdd()"></sn-table-header>
+      </p-header>
+      <p-column [hidden]="! header.isIdsVisible()" field="id" header="TeamId"></p-column>
+      <p-column field="iid" header="IID" [style]="{'width': '80px'}"></p-column>
+      <p-column field="name" header="Name"></p-column>
+      <p-column field="fullName" header="Full Name"></p-column>
+      <p-column field="abbreviation" header="Abbreviation"></p-column>
+      <p-column header="Sport">
+        <template let-col let-team="rowData" let-ri="rowIndex" pTemplate type="body">
+          <a *ngIf="team.sport" [routerLink]="['/sport/sports', team.sport.id]">{{team.sport.id}} </a>
+        </template>
+      </p-column>
+      <p-column header="League">
+        <template let-col let-team="rowData" let-ri="rowIndex" pTemplate type="body">
+          <a *ngIf="team.league" [routerLink]="['/sport/leagues', team.league.id]">{{team.league.name}}</a>
+        </template>
+      </p-column>
+      <p-column header="Division">
+        <template let-col let-team="rowData" let-ri="rowIndex" pTemplate type="body">
+          <a *ngIf="team.division" [routerLink]="['/sport/divisions', team.division.id]">{{team.division.name}}</a>
+        </template>
+      </p-column>
+      <p-column header="Conference">
+        <template let-col let-team="rowData" let-ri="rowIndex" pTemplate type="body">
+          <a *ngIf="team.conference"
+             [routerLink]="['/sport/conferences', team.conference.id]">{{team.conference.name}}</a>
+        </template>
+      </p-column>
+      <p-column header="Players">
+        <template let-col let-team="rowData" let-ri="rowIndex" pTemplate type="body">
+          <a [routerLink]="['/sport/players/list', { teamId: team.id }]">Players</a>
+        </template>
+      </p-column>
+      <p-column header="Actions" [style]="{'text-align': 'center', 'width':'80px'}">
+        <template let-team="rowData" pTemplate="body">
+          <button pButton type="button" (click)="onEdit(team.id)" icon="fa-pencil-square-o"></button>
+          <button *ngIf="false" pButton type="button" (click)="onDelete(team.id)" icon="fa-trash"
+                  class="ui-button-danger"></button>
+        </template>
+      </p-column>
+    </p-dataTable>
+    <sn-paginator *ngIf="! loading"
+                  [page]="page.number"
+                  [size]="page.size"
+                  [total]="total"
+                  (onPageSelected)="goToPage($event)" style="width:100%"></sn-paginator>
+  </div>
+</sn-page>

@@ -1,0 +1,33 @@
+<div class="ui-g-12 ui-g-nopad">
+<div class="ui-g-3">
+  <div class="ui-g-3">
+    Entity:
+  </div>
+  <div class="ui-g-9 ui-g-nopad">
+    <p-dropdown [options]="entityTypeOptions" [(ngModel)]="selectedEntityType" (onChange)="onEntityTypeChange()"
+                [style]="{float: 'left', width: '100%'}"></p-dropdown>
+  </div>
+</div>
+<div class="ui-g-3">
+  <div class="ui-g-3">
+    Sport:
+  </div>
+  <div class="ui-g-9 ui-g-nopad">
+    <p-dropdown [options]="sportOptions" [(ngModel)]="selectedSport" (onChange)="onSportChange()"
+                [style]="{float: 'left', width: '100%'}"></p-dropdown>
+  </div>
+</div>
+<div class="ui-g-3">
+  <div class="ui-g-3">
+    League:
+  </div>
+  <div class="ui-g-9 ui-g-nopad">
+    <p-dropdown [options]="leagueOptions" [(ngModel)]="selectedLeague" (onChange)="onLeagueChange()"
+                [style]="{float: 'left', width: '100%'}"></p-dropdown>
+  </div>
+</div>
+<div class="ui-g-3">
+  <p-dropdown [options]="scraperUrlOptions" [(ngModel)]="selectedScraperUrl" (onChange)="onChange()"
+              [style]="{float: 'left', width: '100%'}" filter="filter"></p-dropdown>
+</div>
+</div>

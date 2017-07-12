@@ -1,0 +1,113 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div class="ui-g" content="body">
+    <form *ngIf="season" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" pInputText [(ngModel)]="season.id" [(formControl)]="form.controls.id" />
+      <div class="ui-g form-group">
+        <div class="ui-g-12 ">
+          <div class="ui-g-2">
+            Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="season.name" [formControl]="form.controls.name" placeholder="Required" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i>
+              Season Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12 ">
+          <div class="ui-g-2">
+            Description *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="season.description" [formControl]="form.controls.description" placeholder="Required" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.description.valid && form.controls.description.dirty">
+              <i class="fa fa-close"></i>
+              Description  is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-sport #selectSport [sport]="sportId"
+                             (sportChanged)="sportChanged($event)"></sn-select-sport>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i>
+              Sport is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            League *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-league #selectLeague [sport]="sportId" [league]="leagueId"
+                              (leagueChanged)="leagueChanged($event)">
+            </sn-select-league>
+          </div>
+          <div class="ui-grid-col-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.leagueId.valid && form.controls.leagueId.dirty">
+              <i class="fa fa-close"></i>
+              League is required
+            </div>
+          </div>
+        </div>        
+        <div class="ui-g-12" *ngIf="season.updated">
+          <div class="ui-g-3">
+            Updated:
+          </div>
+          <div class="ui-g-6">
+            {{season.updated | date:'short'}}
+          </div>
+        </div>
+        <div *ngIf="season.isDeleted" class="ui-g-12">
+          <div class="ui-g-2">
+            Deleted:
+          </div>
+          <div class="ui-g-6">
+            {{season.isDeleted}} {{season.deleted | date:'short'}}
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-3">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}" [disabled]="! form.valid"
+                    class="BlueButton"></button>
+          </div>
+          <div class="ui-g-3">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(season.id)" type="button"
+                    [disabled]="season.isDeleted"
+                    class="RedButton"></button>
+          </div>
+          <div class="ui-g-2"></div>
+          <div class="ui-g-4"></div>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="!season && !loading">Season not found.</div>
+    <div class="ui-g-12 ui-g-nopad" style="margin: 10px 0px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button pButton type="button" (click)="onCancel()" label="Back to List" class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sn-page>

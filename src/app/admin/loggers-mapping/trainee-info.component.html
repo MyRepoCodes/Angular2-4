@@ -1,0 +1,70 @@
+<h3>Training Info</h3>
+<div class="ui-g">
+  <div class="ui-g-6">
+
+    <div class="ui-g">
+      <div class="ui-g-3">Training Desi ID:</div>
+      <div class="ui-g-5">
+        <input type="text" pInputText [(ngModel)]="model.desiId" name="desiId">
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+
+    <div class="ui-g">
+      <div class="ui-g-3">Virtual Machine:</div>
+      <div class="ui-g-5">
+        <input type="text" pInputText [(ngModel)]="model.virtualMachine" name="virtualMachine">
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-3">Course:</div>
+      <div class="ui-g-5">
+        <p-spinner size="10" [min]="1" [max]="50" [(ngModel)]="model.course" name="course"></p-spinner>
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-3">Phase:</div>
+      <div class="ui-g-5">
+        <p-spinner size="10" [min]="1" [max]="3" [(ngModel)]="model.phase" name="phase"></p-spinner>
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+  </div>
+
+
+  <div class="ui-g-6">
+    <div class="ui-g">
+      <div class="ui-g-3">Start Date:</div>
+      <div class="ui-g-5">
+        <p-calendar [(ngModel)]="model.startDate" name="startDate"></p-calendar>
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+
+    <div class="ui-g">
+      <div class="ui-g-3">End Date:</div>
+      <div class="ui-g-5">
+        <p-calendar [(ngModel)]="model.endDate" name="endDate"></p-calendar>
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-3">Active:</div>
+      <div class="ui-g-5">
+        <p-checkbox [(ngModel)]="model.active" binary="true" name="active"></p-checkbox>
+      </div>
+      <div class="ui-g-4"></div>
+    </div>
+
+  </div>
+
+</div>
+

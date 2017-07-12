@@ -1,0 +1,12 @@
+<div *ngIf="playerSuggestions">
+  <sn-player-conflict-resolver
+    [conflict]="conflict"
+    [suggestions]="playerSuggestions"
+  ></sn-player-conflict-resolver>
+</div>
+<div *ngIf="gameSuggestions">
+  <sn-game-conflict-resolver
+    [conflict]="conflict"
+    [suggestions]="gameSuggestions"
+  ></sn-game-conflict-resolver>
+</div>

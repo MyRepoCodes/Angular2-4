@@ -1,0 +1,59 @@
+<div class="Container100">
+  <div class="Card">
+    <h1 class="CardBigTopic Heading1">Recordings list</h1>
+    <div class="SeparatorFull"></div>
+
+    <div class="encoding-recordings">
+      <div class="Container100 SmallIndent">
+        <p-dataList [value]="vm.recordings$ | async">
+          <template let-device pTemplate="item">
+
+            <div class="Card">
+              <div class="device">
+                <h2 class="CardBigTopic Heading3">{{vm.getDeviceInfo(device.deviceId).name}}</h2>
+                <div class="SeparatorFull"></div>
+
+                <p *ngIf="device.recordings.length === 0" class="CardSmallTopic">No stored recordings for this
+                  device</p>
+                <div *ngIf="device.recordings.length > 0">
+                  <ul class="recordings ui-grid">
+                    <li *ngFor="let recording of device.recordings" class="ui-grid-row SmallIndent">
+                      <div class="ui-grid-col-6">
+                    <span class="record-title" title="Encode show" (click)="vm.onRecordingClicked(device, recording)">
+                      Channel {{recording.channelNumber}} ({{recording.startTime | date:'short'}} - {{recording.endTime | date:'short'}})
+                    </span>
+                      </div>
+                      <div class="ui-grid-col-4">
+                        <button pButton type="button"
+                                icon="fa-video-camera" (click)="vm.showVideo(device, recording)"
+                                title="Show video"></button>
+                        <button pButton type="button"
+                                icon="fa-minus" (click)="vm.removeRecording(device, recording)"
+                                title="Remove recording"></button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="EmptyBox20"></div>
+          </template>
+        </p-dataList>
+      </div>
+      <p-dialog [header]="vm.selectedSchedule?.title" modal="modal"
+                [(visible)]="vm.isDialogVisible" showEffect="fade">
+        <span>Would you like to encode this show?</span>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close"
+                    (click)="vm.hideDialog()"
+                    label="No"></button>
+            <button type="button" pButton icon="fa-check"
+                    (click)="vm.encodeShow(vm.selectedRecordingData, vm.selectedRecord)"
+                    label="Yes"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+  </div>
+</div>

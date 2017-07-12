@@ -1,0 +1,64 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+
+    <form *ngIf="conferences" [formGroup]="form" class="ui-g-12">
+      <div class="ui-g-2">
+        <sn-select-sport [sport]="sportId"
+                         (sportChanged)="sportChanged($event)"></sn-select-sport>
+      </div>
+      <div class="ui-g-2">
+        <sn-select-league [sport]="sportId"
+                          [league]="leagueId"
+                          (leagueChanged)="leagueChanged($event)"></sn-select-league>
+      </div>
+      <div class="ui-g-2"></div>
+      <div class="ui-g-4">
+        <button pButton type="button" (click)="search()" label="Search" [disabled]="! form.valid"></button>
+        <button pButton type="button" label="Clear Filter" (click)="clearFilter()" [disabled]="! form.valid"></button>
+      </div>
+    </form>
+    <div *ngIf="!conferences && !loading">Conference not found.</div>
+    <div class="ui-g-12">
+      <p-dataTable *ngIf="! loading" [value]="conferences">
+        <p-header>
+          <sn-table-header #header [name]="'Conferences List'" (add)="onAdd()"></sn-table-header>
+        </p-header>
+        <p-column [hidden]="! header.isIdsVisible()" field="id" header="ConferenceId">
+          <template let-col let-conference="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a [routerLink]="['/sport/conferences', conference.id]">{{conference.id}}</a>
+          </template>
+        </p-column>
+        <p-column field="iid" header="IID" [style]="{'width': '80px'}"></p-column>
+        <p-column field="name" header="Name"></p-column>
+        <p-column field="abbreviation" header="Abbreviation"></p-column>
+        <p-column header="League">
+          <template let-col let-conference="rowData" let-ri="rowIndex" pTemplate type="body">
+            <a *ngIf="conference.league" [routerLink]="['/sport/leagues', conference.league.id]">{{conference.league.name}}</a>
+          </template>
+        </p-column>
+
+        <p-column header="Actions" [style]="{'text-align': 'center', 'width':'80px'}">
+          <template let-conference="rowData" pTemplate="body">
+            <button pButton type="button" (click)="onEdit(conference.id)" icon="fa-pencil-square-o"></button>
+            <button *ngIf="false" pButton type="button" (click)="onDelete(conference.id)" icon="fa-trash"
+                    class="ui-button-danger"></button>
+          </template>
+        </p-column>
+      </p-dataTable>
+      <sn-paginator *ngIf="! loading"
+                    [page]="page.number"
+                    [size]="page.size"
+                    [total]="total"
+                    (onPageSelected)="goToPage($event)"></sn-paginator>
+    </div>
+  </div>
+</sn-page>
+
+
+
+
+
+
+
+

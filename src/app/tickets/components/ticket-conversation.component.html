@@ -1,0 +1,30 @@
+<div *ngIf="chatRoom">
+  <div class="ui-grid-row">
+    <div class="ui-g-6">
+      <h1 class="CardBigTopic">Conversation</h1>
+    </div>
+    <div class="ui-g-6">
+      <button pButton class="Fright" label="Watch" icon="fa-eye" (click)="watchChatRoom()" [disabled]="chatRoom.watchersIds.indexOf(user.id) !== -1"></button>
+    </div>
+  </div>
+
+  <div class="SeparatorFull"></div>
+
+  <section class="comments" *ngIf="chatRoom">
+    <section class="comment" *ngFor="let message of chatRoom.messages">
+      <p-panel header="{{message.user.username}} - {{message.creationDate | snTimeSince}}">
+        {{message.text}}
+      </p-panel>
+      <br/>
+    </section>
+  </section>
+
+  <div class="SeparatorFull"></div>
+
+  <section class="addComment">
+    <h3>Add comment</h3>
+    <textarea pInputTextArea #commentText rows="12" cols="80" placeholder="comment"></textarea>
+    <br/>
+    <button pButton (click)="addComment(commentText)" label="Add comment" [disabled]="!commentText.value"></button>
+  </section>
+</div>

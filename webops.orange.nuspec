@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>WebOpsOrange</id>
+    <version>2.0.0</version>
+    <authors>TeamCity</authors>
+    <description>WebOps2</description>
+  </metadata>
+  <files>
+    <file src="dist\" target=""/>
+  </files>
+</package>

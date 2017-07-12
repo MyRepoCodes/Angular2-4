@@ -1,0 +1,143 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div class="ui-g" content="body">
+    <form *ngIf="conference" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" [ngModel]="conference.id" [formControl]="form.controls.id">
+      <div class="ui-g form-group" style="margin: 10px 0px">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="conference.name" [formControl]="form.controls.name"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i>
+              Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Abbreviation *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="conference.abbreviation" [formControl]="form.controls.abbreviation"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.abbreviation.valid && form.controls.abbreviation.dirty">
+              <i class="fa fa-close"></i>
+              Abbreviation is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-6">
+            <!--<p-dropdown [options]="sportItems" [ngModel]="conference.sport.id"
+                        (onChange)="sportSelected($event.value)"
+                        [formControl]="form.controls.sportId"
+                        [autoWidth]="false"></p-dropdown>-->
+            <sn-select-sport #selectSport [sport]="sportId"
+                             (sportChanged)="sportChanged($event)"></sn-select-sport>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i> Sport is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            League *:
+          </div>
+          <div class="ui-g-6">
+            <!--<p-dropdown [options]="leagueItems" [ngModel]="conference.league.id"
+                        [formControl]="form.controls.leagueId"
+                        [disabled]="leagues.length === 0"
+                        [autoWidth]="false"></p-dropdown>-->
+            <sn-select-league #selectLeague [sport]="sportId" [league]="leagueId"
+                              (leagueChanged)="leagueChanged($event)">
+            </sn-select-league>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.leagueId.valid && form.controls.leagueId.dirty">
+              <i class="fa fa-close"></i> League is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12" *ngIf="conference.updated">
+          <div class="ui-g-2">
+            Updated:
+          </div>
+          <div class="ui-g-6">
+            {{conference.updated | date:'short'}}
+          </div>
+        </div>
+        <div *ngIf="conference.isDeleted" class="ui-grid-row">
+          <div class="ui-g-2">
+            Deleted:
+          </div>
+          <div class="ui-g-6">
+            {{conference.isDeleted}} {{conference.deleted | date:'short'}}
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-2">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}"
+                    [disabled]="! form.valid"
+                    class="BlueButton"></button>
+          </div>
+          <div class="ui-g-2">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(conference.id)" type="button"
+                    [disabled]="conference.isDeleted"
+                    class="RedButton"></button>
+          </div>
+          <div class="ui-g-6"></div>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="!conference && !loading">Conference not found.</div>
+    <div class="ui-g-12 ui-g-nopad" style="margin: 10px 0px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button pButton type="button" (click)="onCancel()" label="Back to List" class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sn-page>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

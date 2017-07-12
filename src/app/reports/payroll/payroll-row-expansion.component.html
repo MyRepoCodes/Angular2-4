@@ -1,0 +1,19 @@
+<div class="expansionContainer" *ngIf="_relatedRecords">
+  <p-dataTable [value]="_relatedRecords" [rowStyleClass]="getStyleClass" [tableStyle]="{'table-layout':'auto'}">
+    <p-column field="periodId" header="Period"></p-column>
+    <p-column field="loggingDate" header="Date"></p-column>
+    <p-column field="logger.iid" header="Logger IID"></p-column>
+    <p-column field="loggerName" header="Logger"></p-column>
+    <p-column field="rate" header="Rate"></p-column>
+    <p-column field="rateType" header="RateType"></p-column>
+    <p-column field="loggingStats.totalMinutesWorked" header="Time"></p-column>
+    <p-column field="loggingStats.clips" header="Clips"></p-column>
+    <p-column field="loggingStats.totalClips" header="Total Clips"></p-column>
+    <p-column field="loggingStats.gameClips" header="Game Clips"></p-column>
+    <p-column field="loggingStats.clipsPercent" header="Clips%"></p-column>
+    <p-column field="amount" header="Amount"></p-column>
+    <p-column field="amountExplanation" header="Amount"></p-column>
+    <p-column field="totalAdjustment" header="Adjustment"></p-column>
+  </p-dataTable>
+</div>
+

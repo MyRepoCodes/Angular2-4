@@ -1,0 +1,61 @@
+<!--suppress HtmlUnknownTag -->
+<p-dataTable [value]="_payrolls" [expandableRows]="true" [expandedRows]="expandedRows"  [tableStyle]="{'table-layout':'auto'}"
+             [rowStyleClass]="rowStyle" [editable]="true" (onEditInit)="editInit($event)">
+
+  <p-header>
+    <div class="ui-g">
+      <button style="float: right" pButton (click)="onCreateButtonClick()" icon="fa-plus-circle"></button>
+      <button style="float: right" pButton (click)="expandAll()" label="Expand All"></button>
+      <button style="float: right" pButton (click)="shrinkAll()" label="Hide All"></button>
+    </div>
+  </p-header>
+
+  <p-column expander="true" styleClass="col-icon"></p-column>
+
+  <p-column field="periodId" header="Period"></p-column>
+  <p-column field="phase" header="Ph"></p-column>
+  <p-column field="loggingDate" header="Logging Date"></p-column>
+  <p-column field="gameName" header="Game Name"></p-column>
+  <p-column field="game.iid" header="Game IID"></p-column>
+  <p-column field="game.league.abbr" header="League"></p-column>
+  <p-column field="logger.iid" header=""></p-column>
+  <p-column field="loggerName" header="Logger Name"></p-column>
+  <p-column field="logger.group" header="PG"></p-column>
+  <p-column field="rate" header="Rate"></p-column>
+  <p-column field="rateType" header="Rate Type"></p-column>
+  <p-column field="loggingStats.totalMinutesWorked" header="Time"></p-column>
+  <p-column field="loggingStats.clips" header="Clips"></p-column>
+  <p-column field="loggingStats.totalClips" header="Total Clips"></p-column>
+  <p-column field="loggingStats.gameClips" header="Game Clips"></p-column>
+  <p-column field="loggingStats.clipsPercent" header="Clips %"></p-column>
+  <p-column field="amount" header="Amount"></p-column>
+  <p-column field="amountExplanation" header="Amount Status"></p-column>
+  <p-column field="adjustment" header="Adjust" [editable]="true">
+    <ng-template let-item="rowData" pTemplate="body">
+      {{item.adjustment}}
+    </ng-template>
+    <ng-template pTemplate="editor" let-item="rowData" let-ri="rowIndex">
+      <input [ngModel]="item.adjustment" type="text" pInputText (blur)="onAdjustmentBlur($event, ri)" (focus)="onAdjustmentFocus($event)" style="width: 50px"/>
+    </ng-template>
+  </p-column>
+  <p-column field="adjustmentType" header="Adj Type" [editable]="true">
+    <ng-template let-item="rowData" pTemplate="body">
+      {{item.adjustmentType}}
+    </ng-template>
+    <ng-template pTemplate="editor" let-item="rowData" let-ri="rowIndex">
+      <select [ngModel]="item.adjustmentType" #typeDropdown (blur)="onAdjustmentTypeBlur($event, ri)">
+        <option *ngFor="let opt of adjustmentTypes" value="{{opt.value}}">{{opt.label}}</option>
+      </select>
+    </ng-template>
+  </p-column>
+  <p-column field="notes" header="Notes"></p-column>
+
+  <ng-template let-item pTemplate="rowexpansion">
+    <sn-payroll-row-expansion
+      [payrollRecord]="item"
+    ></sn-payroll-row-expansion>
+  </ng-template>
+
+</p-dataTable>
+
+<ng-content></ng-content>

@@ -1,0 +1,102 @@
+<sn-page [title]="'Conflicts List'">
+
+  <div content="body">
+
+    <div class="ui-g">
+      <sn-conflicts-filter (change)="filterChanged($event)"></sn-conflicts-filter>
+    </div>
+    <div class="ui-g">
+      <sn-prop-search *ngIf="selectedEntityType === 'Player'" [definitions]="playerSearchDefinitions"
+                      (search)="onPropSearch($event)"></sn-prop-search>
+      <sn-prop-search *ngIf="selectedEntityType === 'Game'" [definitions]="gameSearchDefinitions"
+                      (search)="onPropSearch($event)"></sn-prop-search>
+      <sn-prop-search *ngIf="selectedEntityType === 'GameLineup'" [definitions]="lineupSearchDefinitions"
+                      (search)="onPropSearch($event)"></sn-prop-search>
+    </div>
+
+    <p-dataTable [value]="conflicts" selectionMode="single" [(selection)]="selectedItem">
+
+      <p-header>
+
+        <div class="ui-g">
+          <div class="ui-g-10">
+            Total Records: {{paging.total}}
+          </div>
+          <div class="ui-g-2">
+            <button pButton (click)="showBulkResyncDialog()" label="Bulk Resync"></button>
+          </div>
+        </div>
+
+      </p-header>
+
+
+      <p-column header="Status" [style]="{width: '5%', textAlign: 'center'}">
+        <template pTemplate="body" let-item="rowData">
+          <div [style.color]="item.status == 'Conflict' ? 'black' : 'blue'">
+            {{item.status}}
+          </div>
+        </template>
+      </p-column>
+      <p-column field="scraperUrl" header="Scrapper URL"></p-column>
+
+      <div *ngIf="selectedEntityType === 'Player'">
+        <p-column field="data.firstname" header="First"></p-column>
+        <p-column field="data.lastname" header="Last"></p-column>
+        <p-column field="data.birthDate" header="Birth Date"></p-column>
+      </div>
+
+      <div *ngIf="selectedEntityType === 'Game'">
+        <p-column field="data.gameTeams.awayTeam" header="Away Team"></p-column>
+        <p-column field="data.gameTeams.homeTeam" header="Home Team"></p-column>
+        <p-column field="data.gameTime.gameDateStr" header="Game Time"></p-column>
+      </div>
+
+      <div *ngIf="selectedEntityType === 'GameLineup'">
+        <p-column field="data.game.gameTeams.awayTeam" header="Away Team"></p-column>
+        <p-column field="data.game.gameTeams.homeTeam" header="Home Team"></p-column>
+        <p-column field="data.game.gameTime.gameDateStr" header="Game Time"></p-column>
+        <p-column field="data.player.firstname" header="First"></p-column>
+        <p-column field="data.player.lastname" header="Last"></p-column>
+        <p-column field="data.player.position" header="Position"></p-column>
+        <p-column header="Player Team">
+          <template pTemplate type="body" let-item="rowData">
+            {{item.data.playerTeam == 'Home' ? item.data.game.gameTeams.homeTeam : item.data.game.gameTeams.awayTeam}}
+          </template>
+        </p-column>
+      </div>
+
+      <p-column header="Resolve" [style]="{width: '5%', textAlign: 'center'}">
+        <template pTemplate="body" let-item="rowData">
+          <button pButton class="BlueButton" (click)="onResolveButtonClick(item)" icon="fa-pencil-square-o"
+                  [disabled]="loading"></button>
+        </template>
+      </p-column>
+
+    </p-dataTable>
+
+    <sn-paginator
+      [page]="paging.page"
+      [size]="paging.size"
+      [total]="paging.total"
+      (onPageSelected)="goToPage($event)"
+    ></sn-paginator>
+
+    <p-dialog header="Conflict Details" [(visible)]="dialogVisible" modal="modal" showEffect="fade" width="900" height="800" [contentStyle]="{height: '90%'}">
+      <sn-conflict-details *ngIf="selectedItem && dialogVisible"
+                           [entityType]="selectedEntityType"
+                           [conflict]="selectedItem"
+                           (resolved)="closeConflictDialog()"
+      ></sn-conflict-details>
+    </p-dialog>
+
+    <p-dialog header="Bulk Resync" [(visible)]="bulkDialogVisible" showEffect="fade" width="500">
+    <sn-bulk-resync *ngIf="bulkDialogVisible"
+                    [entityType]="selectedEntityType"
+                    [prefill]="bulkResyncData"
+                    (resyncRequested)="onBulkResyncSuccess()"
+    ></sn-bulk-resync>
+  </p-dialog>
+
+  </div>
+
+</sn-page>

@@ -1,0 +1,29 @@
+<div [formGroup]="form">
+
+  <div class="ui-g">
+
+    <div class="ui-g-4" [class.included]="first.value">Short Name:</div>
+    <div class="ui-g-8">
+      <input #first pInputText type="text" formControlName="shortName">
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="last.value">Full Name:</div>
+    <div class="ui-g-8">
+      <input #last pInputText type="text" formControlName="fullName">
+    </div>
+
+
+
+    <div *ngIf="isResolution" style="width: 100%">
+      <div class="ui-g-4">Select Team:</div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="teamsOptions" [style]="{width: '100%'}" [disabled]="!teamsOptions" [filter]="true"
+                    (onChange)="onTeamSelected($event.value)"></p-dropdown>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,67 @@
+<div class="ticket-group-empty" *ngIf="!ticketGroups">
+  <div class="Contaner100">
+    <div class="Card TexAlCenter">
+      There is no ticket groups.
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Issue Type Editor" [(visible)]="displayDialog" modal="modal" showEffect="fade" width="600">
+  <sn-issue-type-form-builder
+    [issueType]="selectedIssueType"
+    (issueTypeUpdated)="updateIssueType($event)"
+  >
+  </sn-issue-type-form-builder>
+</p-dialog>
+
+<div class="ticket-group" *ngIf="ticketGroups">
+  <div class="ui-grid">
+    <div class="ui-grid-row" *ngIf="ticketGroups.length > 0">
+      <div class="Container100 NoIndent">
+        <div class="Card">
+          <h1 class="CardBigTopic">Available groups</h1>
+          <div class="SeparatorFull"></div>
+          <div class="Container100 NoIndent Flex FlexWrap">
+
+            <div class="ticketGroup Container50 Flex" *ngFor="let tg of ticketGroups">
+              <div class="Card">
+                <h2 class="CardBigTopic">{{tg.name}}</h2>
+                <div class="SeparatorFull"></div>
+                <div *ngIf="tg.issueTypes.length > 0">
+                  <h3 class="CardSmallTopic">Available types:</h3>
+                  <ul>
+                    <li *ngFor="let type of tg.issueTypes">
+                      {{type.title}} | <button pButton (click)="editIssueType(type)" label="Edit"></button>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngIf="tg.issueTypes.length === 0">
+                  <h3 class="CardSmallTopic">This group hasn't issue types yet.</h3>
+                </div>
+
+                <div>
+                  <h3 class="CardSmallTopic">Add issue type</h3>
+                  <input pInputText type="text" placeholder="New issue type" #newIssueType>
+                  <button pButton (click)="addNewIssueType(tg.id, newIssueType)" label="Add issue type" [disabled]="!newIssueType.value"></button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="Container100 NoIndent">
+        <div class="Card">
+          <h1 class="CardBigTopic">Add new group</h1>
+          <div class="SeparatorFull"></div>
+          <input pInputText type="text" placeholder="New group name" #newGroupName>
+          <button pButton (click)="addNewTicketGroup(newGroupName)" label="Add ticket group" [disabled]="!newGroupName.value"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,243 @@
+﻿<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <form *ngIf="player" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" pInputText [ngModel]="player.id" [formControl]="form.controls.id">
+      <div class="ui-g form-group">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            First Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.firstName" placeholder="Required"
+                   [(ngModel)]="player.firstName" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.firstName.valid && form.controls.firstName.dirty">
+              <i class="fa fa-close"></i>
+              First Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Last Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.lastName" placeholder="Required"
+                   [(ngModel)]="player.lastName" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.lastName.valid && form.controls.lastName.dirty">
+              <i class="fa fa-close"></i>
+              Last Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Full Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [value]='player.firstName ? player.firstName +" "+ player.lastName : ""'
+                   [formControl]="form.controls.name" placeholder="Required" [(ngModel)]="player.name" disabled />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i>
+              Full Name is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Status :
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.status" placeholder="Required"
+                   [ngModel]="player.status" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.status.valid && form.controls.status.dirty">
+              <i class="fa fa-close"></i>
+              Status is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Weight *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="number" [formControl]="form.controls.weight" placeholder="Required"
+                   [ngModel]="player.weight" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.weight.valid && form.controls.weight.dirty">
+              <i class="fa fa-close"></i>
+              Weight is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Height *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="number" [formControl]="form.controls.height" placeholder="Required"
+                   [ngModel]="player.height" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.height.valid && form.controls.height.dirty">
+              <i class="fa fa-close"></i>
+              height is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            College :
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.college" placeholder="Required"
+                   [ngModel]="player.college" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.college.valid && form.controls.college.dirty">
+              <i class="fa fa-close"></i>
+              College is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Birth Date *:
+          </div>
+          <div class="ui-g-6">
+            <p-calendar [(ngModel)]="player.birthDate" [placeholder]="'Date'" [showIcon]="true"
+                        [formControl]="form.controls.birthDate"></p-calendar>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.birthDate.valid && form.controls.birthDate.dirty">
+              <i class="fa fa-close"></i>
+              Birth Date is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Birth Place:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [formControl]="form.controls.birthPlace" placeholder="Required"
+                   [ngModel]="player.birthPlace" />
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.birthPlace.valid && form.controls.birthPlace.dirty">
+              <i class="fa fa-close"></i>
+              Birth Place is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Debut Date :
+          </div>
+          <div class="ui-g-6">
+            <p-calendar [(ngModel)]="player.debut" [placeholder]="'Date'" [showIcon]="true"
+                        [formControl]="form.controls.debut"></p-calendar>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.debut.valid && form.controls.debut.dirty">
+              <i class="fa fa-close"></i>
+              Debut Date is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-sport #selectSport [sport]="sportId"
+                             (sportChanged)="sportChanged($event)"></sn-select-sport>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i>
+              Sport is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Bats :
+          </div>
+          <div class="ui-g-6">
+            <sn-select-bats-throws [playingLineup]="Bats"
+                                   (playingLineupChanged)="BatsPlayingLineup($event)"></sn-select-bats-throws>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.Bats.valid && form.controls.Bats.dirty">
+              <i class="fa fa-close"></i>
+              Bats is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Throws :
+          </div>
+          <div class="ui-g-6">
+            <sn-select-bats-throws [playingLineup]="Throws"
+                                   (playingLineupChanged)="ThrowsPlayingLineup($event)"></sn-select-bats-throws>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.Throws.valid && form.controls.Throws.dirty">
+              <i class="fa fa-close"></i>
+              Throws is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-2">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}"
+                    [disabled]="! form.valid"
+                    class="BlueButton"></button>
+          </div>
+          <div class="ui-g-3">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(player.id)" type="button"
+                    [disabled]="player.isDeleted"
+                    class="RedButton"></button>
+          </div>
+          <div class="ui-g-2">
+          </div>
+          <div class="ui-g-3"></div>
+        </div>
+      </div>
+    </form>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button pButton type="button" (click)="onCancel()" label="Back to List" class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sn-page>

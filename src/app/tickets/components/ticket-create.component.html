@@ -1,0 +1,51 @@
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit(ticketForm.value)">
+  <div class="Card">
+    <h1 class="CardBigTopic">Create Ticket</h1>
+    <div class="SeparatorFull"></div>
+    <div class="ui-g-12">
+      <div class="ui-g-4 ui-g-nopad">
+        <div class="ui-g-12">
+          <h4>Department</h4>
+          <p-dropdown [options]="dropDownItems" [autoWidth]="false" [formControl]="ticketForm.controls.ticketGroup"
+                      (ngModelChange)="onTicketGroupChange($event)" required></p-dropdown>
+          <span class="error-text"
+                *ngIf="ticketForm.controls.ticketGroup.touched && !ticketForm.controls.ticketGroup.valid"> Please choose department.</span>
+          <h4>Issue Type</h4>
+          <div class="ui-grid ui-grid-responsive">
+            <div *ngFor="let option of issueOptions" class="ui-grid-row">
+              <div class="ui-grid-col-1">
+                <p-checkbox name="group1" value="{{option}}" [formControl]="ticketForm.controls.type"></p-checkbox>
+              </div>
+              <div class="ui-grid-col-11"><label class="ui-widget">{{option}}</label></div>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <h4>Links</h4>
+          <ul>
+            <li *ngFor="let link of ticketForm.controls.links.value">
+              <a href="{{link.url}}">{{link.name}}</a>
+              <button pButton (click)="removeLink(link.name)" label="X"></button>
+            </li>
+          </ul>
+          <div>
+            <input #linkName pInputText type="text" placeholder="name">
+            <br/>
+            <input #linkUrl pInputText type="text" placeholder="url">
+          </div>
+          <button pButton type="button" (click)="captureLink(linkName, linkUrl)" label="Add link"
+                  [disabled]="!linkUrl.value"></button>
+        </div>
+      </div>
+      <div class="ui-g-8">
+        <h4>Name</h4>
+        <input pInputText type="text" placeholder="Name" [formControl]="ticketForm.controls.name"/>
+        <h4>Description</h4>
+        <textarea pInputTextarea rows="12" placeholder="Description"
+                  [formControl]="ticketForm.controls.description"></textarea>
+      </div>
+    </div>
+    <div class="SeparatorFull"></div>
+  </div>
+  <button pButton type="submit" label="Create Ticket" [disabled]="!ticketForm.valid"></button>
+</form>

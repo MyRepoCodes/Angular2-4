@@ -1,0 +1,89 @@
+<div class="ui-grid">
+  <div class="ui-grid-row">
+    <button pButton label="Start Encoding" (click)="showDialog()" *ngIf="!isEncodingRun()"></button>
+    <button pButton label="Stop Encoding" (click)="cancelEncoding()" *ngIf="isEncodingRun()"></button>
+  </div>
+  <div *ngIf="encodingResult" class="ui-grid-row">
+    <div class="ui-grid">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Game id</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.gameId }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Game name</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.gameName }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Game date</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.gameDate }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Encoding status</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.currentStatus }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Duration</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.duration }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Asset id</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.assetId }}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">League</div>
+        <div class="ui-grid-col-6">{{ encodingResult?.leagueName }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-dialog [(visible)]="isVisible" width="850" height="300" showEffect="fade">
+  <div class="ui-grid">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-5">
+        <div class="ui-grid-row">
+          <label class="ui-grid-col-3" for="tbGameId">Game ID: </label>
+          <input class="ui-grid-col-9" id="tbGameId" [(ngModel)]="encodingParameters.gameId" required pInputText/>
+        </div>
+        <div class="EmptyBox10"></div>
+        <div class="ui-grid-row">
+          <button type="button" pButton (click)="loadGameInfo($event)" label="Load game info"></button>
+        </div>
+        <div class="EmptyBox10"></div>
+        <div class="ui-grid-row" *ngIf="gameInfo">
+          <label class="ui-grid-col-3" for="tbName">Name: </label>
+          <label class="ui-grid-col-9" id="tbName">{{ gameInfo?.gameName }}</label></div>
+        <div class="EmptyBox10"></div>
+        <div class="ui-grid-row" *ngIf="gameInfo">
+          <label class="ui-grid-col-3" for="tbLeague">League: </label>
+          <label class="ui-grid-col-9" id="tbLeague">{{ gameInfo?.leagueName }}</label></div>
+        <div class="EmptyBox10"></div>
+        <div class="ui-grid-row" *ngIf="gameInfo">
+          <label class="ui-grid-col-3" for="tbDate">Date: </label>
+          <label class="ui-grid-col-9" id="tbDate">{{ gameInfo?.date }}</label></div>
+      </div>
+      <div class="ui-grid-col-1"></div>
+      <div class="ui-grid-col-4">
+        <div class="ui-grid-row"><label class="ui-grid-col-6" for="cbDuration">Max Duration: </label>
+          <input class="ui-grid-col-6" id="cbDuration" value="5"
+                 required [(ngModel)]="encodingParameters.durationInHours"/></div>
+        <div class="ui-grid-row"><label class="ui-grid-col-6" >Node: </label>
+          <p-dropdown class="ui-grid-col-6" [options]="nodesList$ | async"
+                      [(ngModel)]="encodingParameters.nodeIpAddress"
+                      [style]="{'width': '150px'}"
+                      ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-close"
+              (click)="closeDialog()"
+              label="Cancel"></button>
+      <button type="button" pButton icon="fa-play" label="Start" (click)="beginEncoding()"></button>
+    </div>
+  </footer>
+</p-dialog>

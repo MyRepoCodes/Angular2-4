@@ -1,0 +1,43 @@
+<div *ngIf="!creatingRule">
+
+  <h3>Games Resolution</h3>
+
+  <div *ngIf="ruleCreated">
+    Game rule was succesfully created. You can now resync item.
+  </div>
+
+  <div *ngIf="!ruleCreated">
+    <p-dataTable [value]="suggestions" selectionMode="single" [(selection)]="selectedSuggestion" [sortField]="utc">
+      <p-column field="iid" header="IID"></p-column>
+      <p-column field="homeTeam.name" header="Home Team"></p-column>
+      <p-column field="awayTeam.name" header="Away Team"></p-column>
+      <p-column field="date" header="Game Date"></p-column>
+      <p-column field="utc" header="Game UTC"></p-column>
+      <p-column field="doubleHeader" header="Double Header Status"></p-column>
+      <p-column header="Edit">
+        <template pTemplate type="body" let-item="rowData">
+          <a target="_blank" [routerLink]="['/sport/games', item.id]">Edit Game</a>
+        </template>
+      </p-column>
+    </p-dataTable>
+
+    <div class="ui-g">
+      <div class="ui-g-6">
+        <button pButton label="Create Rule" (click)="createRule()"></button>
+      </div>
+      <div class="ui-g-6">
+        <button pButton label="Create IID Hint Rule" (click)="createIidHintRule()"
+                [disabled]="!selectedSuggestion"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="creatingRule">
+  <sn-rule-editor
+    [prefill]="rule"
+    [selectedType]="'Game'"
+    (saved)="onRuleSaved()"
+    (canceled)="back()"
+  ></sn-rule-editor>
+</div>

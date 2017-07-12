@@ -1,0 +1,81 @@
+<sn-page [title]="'Loggers mapping'">
+
+  <div class="ui-g" content="body">
+
+    <div class="ui-g-12">
+      <div class="ui-g-8">
+        <input type="text" pInputText class="search-field" placeholder="Enter logger name to search mapping for this logger... (search is case sensitive)" #nameSearch>
+      </div>
+      <div class="ui-g-4">
+        <button pButton label="Search" icon="fa-search" class="search-button" (click)="searchMappingsByName(nameSearch.value)"></button>
+      </div>
+    </div>
+
+    <p-dataTable [value]="loggerMappings" [pageLinks]="3" [rows]="25" expandableRows="true">
+
+      <p-header>
+        <button pButton class="ui-button-success" (click)="addEntry()" [disabled]="adding" icon="fa-plus-circle" style="float: right"></button>
+        <div class="ui-helper-clearfix"></div>
+      </p-header>
+
+      <p-column expander="true" styleClass="col-icon" [style]="{'width':'40px'}"></p-column>
+
+      <p-column field="logger.id" header="User Id" [sortable]="true"></p-column>
+
+      <p-column field="logger.iid" header="Iid" [sortable]="true">
+        <template pTemplate type="body" let-item="rowData">
+          <span *ngIf="!item.isNew">
+            {{item.logger.iid}}
+          </span>
+          <span *ngIf="item.isNew">
+            <input type="text" pInputText [value]="item.logger ? item.logger.iid : ''" (change)="findUserByIid($event.target.value)">
+          </span>
+        </template>
+      </p-column>
+
+      <p-column field="logger.last" header="Name" [sortable]="true">
+        <template pTemplate type="body" let-item="rowData">
+          <span *ngIf="!item.isNew">
+            {{item.logger.first}} {{item.logger.last}}
+          </span>
+          <span *ngIf="item.isNew">
+            <p-autoComplete [suggestions]="suggest" (completeMethod)="findUsers($event.query)" (onSelect)="optionSelected($event)" [ngModel]="item.logger ? item.logger.fullName : ''" field="name"></p-autoComplete>
+          </span>
+        </template>
+      </p-column>
+
+      <p-column field="desiId" header="Desi Id" [sortable]="true">
+        <template pTemplate type="body" let-item="rowData">
+          <input type="text" pInputText [(ngModel)]="item.desiId"/>
+        </template>
+      </p-column>
+
+      <p-column header="Actions">
+        <template pTemplate type="body" let-item="rowData">
+          <span *ngIf="!item.isNew">
+            <button pButton (click)="onUpdateButtonClick(item)" icon="fa-floppy-o"></button>
+          </span>
+          <span *ngIf="item.isNew">
+            <button pButton (click)="onCreateButtonClick(item)" icon="fa-check" [disabled]="!canSave()"></button>
+            <button pButton (click)="onCancelButtonClick()" icon="fa-times"></button>
+          </span>
+        </template>
+      </p-column>
+
+      <template let-loggerMapping pTemplate="rowexpansion">
+        <sn-trainee-info-form [model]="loggerMapping.trainingInfo"></sn-trainee-info-form>
+      </template>
+
+    </p-dataTable>
+
+    <sn-paginator
+      [page]="paging.page"
+      [size]="paging.size"
+      [total]="paging.total"
+      (onPageSelected)="goToPage($event)"
+    ></sn-paginator>
+
+  </div>
+</sn-page>
+
+

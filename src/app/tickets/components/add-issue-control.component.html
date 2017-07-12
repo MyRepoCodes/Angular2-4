@@ -1,0 +1,46 @@
+<form (ngSubmit)="onSubmit()" #theForm="ngForm">
+  <div class="ui-g-12">
+    <div class="ui-g-4 ui-g-nopad">
+      Title
+    </div>
+    <div class="ui-g-8 ui-g-nopad">
+      <input required type="text" pInputText [(ngModel)]="model.title" name="title">
+    </div>
+  </div>
+
+  <div class="ui-g-12">
+    <div class="ui-g-4 ui-g-nopad">
+      Type
+    </div>
+    <div class="ui-g-8 ui-g-nopad">
+      <p-dropdown required [options]="controlTypes" [(ngModel)]="model.type" name="type"></p-dropdown>
+    </div>
+  </div>
+
+  <!--For dropdown only-->
+  <div class="ui-g-12" *ngIf="model.type === 'dropdown'">
+    <div class="ui-g-4 ui-g-nopad">
+      Options
+    </div>
+    <div class="ui-g-8 ui-g-nopad">
+      <input required type="text" pInputText [(ngModel)]="model.data.options" name="data">
+    </div>
+    <div class="ui-g-12" [style.color]="'green'">
+      Enter comma-separated list of possible options.
+    </div>
+  </div>
+
+  <div class="ui-g-12">
+    <div class="ui-g-4 ui-g-nopad">
+      Required
+    </div>
+    <div class="ui-g-8 ui-g-nopad">
+      <p-checkbox [(ngModel)]="model.required" binary="true" name="required"></p-checkbox>
+    </div>
+  </div>
+
+  <div class="ui-g-12">
+    <button type="submit" pButton label="Ok" [disabled]="!theForm.form.valid"></button>
+    <button type="button" pButton label="Cancel" (click)="onCancel()"></button>
+  </div>
+</form>

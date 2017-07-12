@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+  Vadim -- Developer
+  Vitalii -- Developer
+
+# THANKS
+
+  Everyone
+
+# TECHNOLOGY COLOPHON
+
+  HTML5, CSS3, Bootstrap,
+  Angular2, TypeScript, Webpack

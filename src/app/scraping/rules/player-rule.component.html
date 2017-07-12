@@ -1,0 +1,56 @@
+<div [formGroup]="form">
+
+  <div class="ui-g">
+
+    <div class="ui-g-4" [class.included]="first.value">First name:</div>
+    <div class="ui-g-8">
+      <input #first pInputText type="text" formControlName="firstname">
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="last.value">Last name:</div>
+    <div class="ui-g-8">
+      <input #last pInputText type="text" formControlName="lastname">
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="birthday.value">Birth date:</div>
+    <div class="ui-g-8">
+      <p-calendar #birthday formControlName="birthDate"></p-calendar>
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="height.value">Height:</div>
+    <div class="ui-g-8">
+      <p-spinner #height formControlName="heightInches"></p-spinner>
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="weight.value">Weight:</div>
+    <div class="ui-g-8">
+      <p-spinner #weight formControlName="weightPounds"></p-spinner>
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="batArm.value">Batting arm:</div>
+    <div class="ui-g-8">
+      <p-dropdown #batArm [options]="armOptions" formControlName="battingArm" [style]="{width: '100%'}"></p-dropdown>
+    </div>
+
+
+    <div class="ui-g-4" [class.included]="catchArm.value">Throwing arm:</div>
+    <div class="ui-g-8">
+      <p-dropdown #catchArm [options]="armOptions" formControlName="throwingArm" [style]="{width: '100%'}"></p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-g-nopad" *ngIf="isResolution">
+      <div class="ui-g-4" [class.included]="iidHint.value">IID Hint:</div>
+      <div class="ui-g-8">
+        <input #iidHint type="text" pInputText formControlName="iidHint">
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,40 @@
+<sn-page [title]="'Sport List'">
+
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+
+  <div content="body">
+
+    <div *ngIf="loading">Loading...</div>
+
+    <p-dataTable *ngIf="! loading" [value]="sports" >
+
+      <p-header>
+        <sn-table-header #header [name]="'Sport List'" (add)="onAdd()"></sn-table-header>
+      </p-header>
+
+      <p-column [hidden]="! header.isIdsVisible()" field="id" header="ID"></p-column>
+
+      <p-column field="iid" header="IID" [style]="{'width': '80px'}"></p-column>
+
+      <p-column field="name" header="Name"></p-column>
+
+      <p-column field="updated" header="Updated"></p-column>
+
+      <p-column header="Actions" [style]="{'text-align': 'center', 'width':'80px'}">
+        <template let-sport="rowData" pTemplate="body">
+          <button pButton type="button" (click)="onEdit(sport.id)" icon="fa-pencil-square-o"></button>
+          <button *ngIf="false" pButton type="button" (click)="onDelete(sport.id)" icon="fa-trash" class="ui-button-danger"></button>
+        </template>
+      </p-column>
+
+    </p-dataTable>
+
+    <sn-paginator *ngIf="! loading"
+      [page]="page.number"
+      [size]="page.size"
+      [total]="total"
+      (onPageSelected)="goToPage($event)"
+    ></sn-paginator>
+
+  </div>
+</sn-page>

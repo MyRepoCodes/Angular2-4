@@ -1,0 +1,203 @@
+/* You can add global styles to this file, and also import other style files */
+
+.ui-timepicker.ui-widget-header {
+  background-color: darkgray;
+}
+
+
+/*panal ui */
+
+.panel-blc {
+  border: 1px solid #d9d9d9;
+  margin: 0 0 10px 0;
+}
+.panel-head {
+  background: linear-gradient(to bottom, #f6f7f9 0%, #ebedf0 100%) !important;
+  padding: 5px 10px;
+  border-bottom: 1px solid #d9d9d9;
+}
+.panel-head-lbl {
+  width: calc(100% - 30px);
+  font-size: 15px;
+  padding: 5px 0 0;
+  font-weight: 600;
+  color: #444;
+}
+.panel-close-btn {
+  float: right;
+}
+.select-dropdown .ui-dropdown{
+  width: 165px !important;
+}
+.ui-growl {
+  z-index:99999999999 !important;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+/*Related Ticket*/
+.ticket-blc {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ticket-box {
+  width: 33.3%;
+  padding: 0;
+}
+
+.ticket-box > ul {
+  background: #fff;
+  box-shadow: 0 0 10px #aaa;
+  padding: 10px 15px;
+  list-style: none;
+  margin: 0;
+  margin: 0 20px 20px 0;
+  height: 240px;
+  overflow: auto;
+}
+
+.ticket-box > ul ul {
+  padding: 0;
+}
+
+.ticket-box ul li {
+  padding: 0 0 8px 0;
+  display: flex;
+  color: #444;
+}
+
+.ticket-box ul li label,
+.ticket-box ul ul li label {
+  flex: none;
+  font-weight: 500;
+  width: 130px;
+  color: #111;
+}
+
+.ticket-box > ul li span {
+  font-weight: 300;
+  word-break: break-all;
+}
+
+.status-popup.ui-menu {
+  text-align: left;
+}
+
+.comment-block .ui-panel-content {
+  padding: 10px;
+  margin: 0 0 10px 0;
+}
+
+.user-textarea textarea {
+  height: 80px;
+  width: 100%;
+}
+
+.user-textarea {
+  margin: 12px 0 0;
+}
+
+.user-textarea:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.ticket-info h2 {
+  margin: 0 0 10px 0;
+}
+
+.ticket-box.ticket-box-full {
+  width: 100%;
+  margin: 0;
+}
+
+.ticket-box.ticket-box-full ul {
+  margin-right: 0;
+  box-shadow: 0 0 4px #bbb;
+}
+
+.ticket-box.ticket-box2 {
+  width: 100%;
+  box-shadow: 0 0 10px #aaa;
+  -moz-box-shadow: 0 0 10px #aaa;
+  -webkit-box-shadow: 0 0 10px #aaa;
+  -o-box-shadow: 0 0 10px #aaa;
+  margin: 0 0 10px 0;
+}
+.ticket-box.ticket-box2 h2 {
+  padding: 10px 0 10px 15px;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.ticket-box.ticket-box2 ul {
+  height: auto;
+  margin-right:0;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+}
+
+.ticket-box.ticket-box2 ul li {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 15px 10px 0;
+  width: 23%;
+}
+
+.ticket-box.ticket-box2 ul li.full-width {
+  width: 100%;
+}
+
+.ticket-box.ticket-box2 ul li label {
+  font-weight: 600;
+}
+
+.ticket-history-blc {
+  box-shadow: 0 0 5px #aaa;
+}
+
+.ticket-history-blc > h2 {
+  padding: 10px 0 9px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.ticket-rw {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  border-left: 5px solid transparent;
+}
+
+.ticket-rw ul {
+  margin: 0;
+  padding: 0;
+}
+
+.ticket-rw ul li {
+  display: inline-block;
+  list-style: none;
+  padding: 0 15px 0px 0;
+}
+
+.ticket-rw ul li label {
+  font-weight: 600;
+}
+
+.ticket-rw:hover {
+  border-left: 5px solid #b2dbf6;
+  background: #fafafa;
+}
+
+
+.ui-growl {
+  z-index:99999999999 !important;
+}

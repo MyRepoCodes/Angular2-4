@@ -1,0 +1,6 @@
+<p-dropdown
+  [options]="timezoneItems"
+  [ngModel]="timezone"
+  (onChange)="timezoneSelected($event.value)"
+  filter="filter"
+></p-dropdown>

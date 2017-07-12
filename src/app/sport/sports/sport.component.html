@@ -1,0 +1,75 @@
+<sn-page [title]="title">
+
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+
+  <div class="ui-g" content="body">
+    <div *ngIf="!sport && !loading">Sport not found.</div>
+
+    <form *ngIf="sport" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" [ngModel]="sport.id" [formControl]="form.controls.id">
+
+      <div class="ui-g form-group">
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Sport Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="sport.name" formControlName="name" placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+              *ngIf="!form.controls.name.valid && form.controls.name.dirty"
+            >
+              <i class="fa fa-close"></i>
+              Sport Name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12" *ngIf="sport.updated">
+          <div class="ui-g-2">
+            Updated:
+          </div>
+          <div class="ui-g-6">
+            {{sport.updated | date:'short'}}
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+
+          <div class="ui-g-2"></div>
+
+          <div class="ui-g-2">
+            <button pButton type="submit" label="{{mode === 'create' ? 'Create' : 'Update'}}" [disabled]="! form.valid"
+              class="BlueButton"></button>
+          </div>
+
+          <div class="ui-g-2">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton
+              *ngIf="!(mode === 'create')" label="Delete" (click)="onDelete(sport.id)"
+              type="button" class="RedButton"
+            ></button>
+          </div>
+
+          <div class="ui-g-2"></div>
+          <div class="ui-g-4"></div>
+
+        </div>
+      </div>
+
+    </form>
+
+
+
+    <div class="ui-g-12 ui-g-nopad" style="margin: 10px 0px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button pButton (click)="onCancel()" type="submit" label="Back to List" class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</sn-page>

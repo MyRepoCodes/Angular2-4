@@ -1,0 +1,130 @@
+<form [formGroup]="payrollForm" (ngSubmit)="onSubmit()">
+  <div class="ui-grid">
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Period:
+      </div>
+      <div class="ui-grid-col-6">
+        {{payrollForm.controls['periodId'].value}}
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Phase *:
+      </div>
+      <div class="ui-grid-col-6">
+        <p-spinner [min]="1" [max]="3" formControlName="phase" placeholder="Required"></p-spinner>
+      </div>
+      <div class="ui-grid-col-4">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!phaseCtrl.valid && phaseCtrl.dirty">
+          <i class="fa fa-close"></i>
+          Phase is required
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Type *:
+      </div>
+      <div class="ui-grid-col-6">
+        <p-dropdown [options]="typeOptions" formControlName="type" [style]="{width: '100%'}"></p-dropdown>
+      </div>
+      <div class="ui-grid-col-4">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!typeCtrl.valid && typeCtrl.dirty">
+          <i class="fa fa-close"></i>
+          Type is required
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Logger *:
+      </div>
+      <div class="ui-grid-col-6">
+        <p-autoComplete #loggerAutoComplete formControlName="loggerName" [suggestions]="_loggersSuggestions" (onSelect)="suggestionSelected($event)" (completeMethod)="searchLoggers($event.query)" field="name"></p-autoComplete>
+      </div>
+      <div class="ui-grid-col-4">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!loggerNameCtrl.valid && loggerNameCtrl.dirty">
+          <i class="fa fa-close"></i>
+          Logger is required
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Logging Date:
+      </div>
+      <div class="ui-grid-col-6">
+        <p-calendar formControlName="loggingDate"></p-calendar>
+      </div>
+      <div class="ui-grid-col-4">
+
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        GameID:
+      </div>
+      <div class="ui-grid-col-6">
+        <input pInputText type="text" formControlName="gameId" (change)="onGameIidInput($event.target.value)"/>
+      </div>
+      <div class="ui-grid-col-4">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!gameIdCtrl.valid && gameIdCtrl.dirty">
+          <i class="fa fa-close"></i>
+          Not valid game iid
+        </div>
+        <div class="ui-message ui-messages-success ui-corner-all" *ngIf="_checkedGame">
+          <i class="fa"></i>
+          {{_checkedGame.awayTeam.name}} @ {{_checkedGame.homeTeam.name}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Amount *:
+      </div>
+      <div class="ui-grid-col-6">
+        <input pInputText type="text" formControlName="amount" placeholder="Required"/>
+      </div>
+      <div class="ui-grid-col-4">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!amountCtrl.valid && amountCtrl.dirty">
+          <i class="fa fa-close"></i>
+          Amount is required
+        </div>
+      </div>
+    </div>
+
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        Notes:
+      </div>
+      <div class="ui-grid-col-6">
+        <input pInputText type="text" formControlName="notes"/>
+      </div>
+      <div class="ui-grid-col-4">
+
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-6">
+        <button type="submit" pButton label="Save" [disabled]="!payrollForm.valid"></button>
+      </div>
+      <div class="ui-grid-col-6">
+        <button type="button" pButton label="Cancel" (click)="onCancel()"></button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+

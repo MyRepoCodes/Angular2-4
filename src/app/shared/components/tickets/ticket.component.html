@@ -1,0 +1,202 @@
+<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div content="body" class="ui-g">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" pInputText [(ngModel)]="ticket.id" [(formControl)]="form.controls._id"/>
+      <div class="ui-g form-group">
+        <div class="ui-g-12 ">
+          <div class="ui-g-2">
+            Title *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [(ngModel)]="ticket.title" [formControl]="form.controls.title"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.title.valid && form.controls.title.dirty">
+              <i class="fa fa-close"></i>
+              Ticket Title is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Description *:
+          </div>
+          <div class="ui-g-6">
+         <textarea pInputTextarea autoResize="autoResize" [(ngModel)]="ticket.description"
+                   [formControl]="form.controls.description"
+                   placeholder="Required"></textarea>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.description.valid && form.controls.description.dirty">
+              <i class="fa fa-close"></i> Ticket description is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Template *:
+          </div>
+          <div class="ui-g-6">
+            <p-dropdown class="select-dropdown" [options]="templates" [(ngModel)]="ticket.template"
+                        [formControl]="form.controls.template"></p-dropdown>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.template.valid && form.controls.template.dirty">
+              <i class="fa fa-close"></i> Ticket template is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Priority *:
+          </div>
+          <div class="ui-g-6">
+            <p-dropdown class="select-dropdown" [options]="prioritys" [(ngModel)]="ticket.priority"
+                        [formControl]="form.controls.priority"></p-dropdown>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.priority.valid && form.controls.priority.dirty">
+
+              <i class="fa fa-close"></i> Ticket priority is required
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Group *:
+          </div>
+          <div class="ui-g-6">
+            <p-dropdown class="select-dropdown" [options]="groups" [(ngModel)]="ticket.group"
+                        [formControl]="form.controls.group"></p-dropdown>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.group.valid && form.controls.group.dirty">
+              <i class="fa fa-close"></i> Ticket group is required
+            </div>
+          </div>
+        </div>
+
+         <div class="ui-g-12">
+        <div class="ui-g-10"></div>
+        <div class="ui-2">
+        <button pButton type="button" icon="fa fa-plus" (click)="addLink()"></button>
+        </div>
+        </div>
+        <div class="ui-g-12">
+          <div *ngIf="link" formArrayName="links">
+
+            <div *ngFor="let link of link; let i=index">
+              <div [formGroupName]="i">
+                <div class="panel-blc">
+                  <div class="ui-g panel-head">
+                  <div class="panel-head-lbl">Link</div>
+                  <div class="panel-close-btn">
+                  <button pButton type="button" icon="fa fa-times" (click)="removeLink(i)"></button>
+                  </div>
+                  </div>
+                  <div class="ui-g form-group panel-body">
+                    <div class="ui-g-12">
+                      <div class="ui-g-2">
+                        Type *:
+                      </div>
+                      <div class="ui-g-6">
+                        <p-dropdown [options]="linkTypes" [(ngModel)]="link.type"
+                                    [formControl]="form.controls.links.controls[i].controls.type"  (onChange) = "onLinkChange(link.type)"></p-dropdown>
+                      </div>
+                      <div class="ui-g-4">
+                        <div class="ui-message ui-messages-error ui-corner-all"
+                             *ngIf="!form.controls.links.controls[i].controls.type.valid
+         && form.controls.links.controls[i].controls.type.dirty">
+                          <i class="fa fa-close"></i> Type is required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ui-g-12 ">
+                      <div class="ui-g-2">
+                        Ref Id *:
+                      </div>
+                      <div class="ui-g-6">
+
+                        <!--<p-dropdown [options]="refList" [ngModel]="link.refId" [filter]="true"-->
+                        <!--class="select-dropdown"-->
+                        <!--[formControl]="form.controls.links.controls[i].controls.refId"></p-dropdown>-->
+                        <input pInputText type="text" [(ngModel)]="link.refId"
+                               [formControl]="form.controls.links.controls[i].controls.refId"
+                               placeholder="Required"/>
+
+                        <!--<p-dropdown [options]="linkTypes" [ngModel]="link.type"-->
+                        <!--[formControl]="form.controls.links.controls[i].controls.type"></p-dropdown>-->
+                      </div>
+                      <div class="ui-g-4">
+                        <div class="ui-message ui-messages-error ui-corner-all"
+                             *ngIf="!form.controls.links.controls[i].controls.refId.valid
+         && form.controls.links.controls[i].controls.refId.dirty">
+                          <i class="fa fa-close"></i>
+                          Ref Id is required
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-3">
+            <button pButton type="submit" label="{{(mode === 'create')   ? 'Create' : 'Update'}}"
+                    [disabled]="! form.valid"
+                    class="BlueButton"></button>
+          </div>
+          <div class="ui-g-3">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <!--<button pButton *ngIf="!(mode === 'create')" label="Delete"-->
+                    <!--(click)="onDelete(ticket.id)" type="button"-->
+                    <!--[disabled]="ticket.isDeleted"-->
+                    <!--class="RedButton"></button>-->
+          </div>
+          <div class="ui-g-2"></div>
+          <div class="ui-g-4"></div>
+        </div>
+      </div>
+    </form>
+    <div class="ui-g-12 ui-g-nopad" style="margin: 10px 0px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <button *ngIf="!this.filter" pButton type="button" (click)="onCancel()" label="Back " class="GreenButton"></button>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g-12" *ngIf = "relatedTicket" >
+      <p>Related Ticket</p>
+      <div class="ticket-blc">
+      <div *ngFor = "let itemData of relatedTicket" class="ticket-box">
+        <ul class="info2" >
+          <li><label> Name:</label><span>{{itemData.name}}</span></li>
+          <li><label> Title:</label><span>{{itemData.title}}</span></li>
+          <li> <label> Template:</label><span>{{itemData.template.type}}</span></li>
+          <li> <label> Status:</label><span>{{itemData.status}}</span></li>
+          <li> <label> Created At:</label><span>{{itemData.createdAt  | date: 'dd/MM/yyyy'}}</span></li>
+            <ul *ngFor="let items of itemData.links ">
+            <li><label> Link ref:</label><span>{{items.refId}}</span></li>
+             <li> <label> Link type:</label><span>{{items.type}}</span></li>
+          </ul>
+          <li *ngIf="itemData.creator"><label> creator:</label><span>{{itemData.creator.name}}</span></li>
+          <li *ngIf="itemData.assignee" ><label> Assignee:</label><span>{{itemData.assignee.name}}</span></li>
+          <li><label> Description:</label><span>{{itemData.description}}</span></li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </div>
+</sn-page>

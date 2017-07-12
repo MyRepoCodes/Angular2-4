@@ -1,0 +1,53 @@
+<div class="chat-wrapper">
+  <!--<div class="Card ShadowEffect" [style.display]="visible ? 'block': 'none'">-->
+    <!--<div class="ui-g">-->
+      <!--<div class="ui-g-11">-->
+        <!--<p-dropdown #chatRoom-->
+                    <!--[options]="chatRoomsOptions"-->
+                    <!--(onChange)="chatRoomSelect($event)">-->
+          <!--<template let-chatRoom>-->
+            <!--<div class="ui-helper-clearfix" style="position: relative;height: 25px;">-->
+              <!--<div style="font-size:14px;float:left;margin-top:4px">{{chatRoom.label}}</div>-->
+              <!--<div style="font-size:14px;float:right;margin-top:4px">{{chatRoom.unread}}</div>-->
+            <!--</div>-->
+          <!--</template>-->
+        <!--</p-dropdown>-->
+      <!--</div>-->
+      <!--<div class="ui-g-1">-->
+        <!--<i class="fa fa-times" (click)="close()"></i>-->
+      <!--</div>-->
+      <!--<div class="ui-g-12" *ngIf="isAdmin(user)">-->
+        <!--<p-dropdown [options]="threadOptions" [(ngModel)]="selectedThread"></p-dropdown>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div *ngIf="chatRoomIsSelected() && threadIsSelected()">-->
+      <!--<div class="SeparatorFull"></div>-->
+      <!--<div class="ui-g message-box">-->
+        <!--<div class="ui-g-12 message" *ngFor="let message of messages"-->
+             <!--[style.backgroundColor]="message.isUnread ? 'lightskyblue' : 'white'">-->
+          <!--<div *ngIf="message.thread === selectedThread" (mouseenter)="messageRead(message)">-->
+            <!--<div [style.color]="message.user.id === user.id ? '#6495ED' : 'grey'">-->
+              <!--{{message.user.username}} - {{message.creationDate | snTimeSince}}-->
+            <!--</div>-->
+            <!--<div>-->
+              <!--{{message.text}}-->
+            <!--</div>-->
+            <!--<div class="Separator"></div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="SeparatorFull"></div>-->
+
+      <!--<div class="ui-g">-->
+        <!--<div class="ui-g-12 ui-fluid">-->
+          <!--<textarea pInputTextarea type="text" #messageText placeholder="enter message"></textarea>-->
+        <!--</div>-->
+        <!--<div class="ui-g-12 ui-fluid">-->
+          <!--<button pButton label="Send" (click)="addMessage(chatRoom.value, messageText.value)"></button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+  <!--</div>-->
+</div>

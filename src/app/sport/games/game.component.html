@@ -1,0 +1,241 @@
+﻿<sn-page [title]="title">
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+  <div class="ui-g" content="body">
+
+    <form *ngIf="game" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <input type="hidden" [(ngModel)]="game.id" [(formControl)]="form.controls.id">
+      <div class="ui-g form-group">
+
+        <div class="ui-g-12 ">
+          <div class="ui-g-2">
+            Name *:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="game.name" [formControl]="form.controls.name"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i>
+              Game Name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Date Time:
+          </div>
+          <div class="ui-g-6">
+            <p-calendar [showTime]="true"
+                        [ngModel]="utcDate"
+                        [placeholder]="'UTC'"
+                        [showIcon]="true"
+                        [formControl]="form.controls.utc"
+            ></p-calendar>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Time Zone:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-timezone
+              [timezone]="game.timeZone" (timezoneChanged)="onTimezoneChanged($event)"
+            ></sn-select-timezone>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Home Score:
+          </div>
+          <div class="ui-gl-6">
+            <input pInputText type="text" [ngModel]="game.homeScore" [formControl]="form.controls.homeScore"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Away Score:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="game.awayScore" [formControl]="form.controls.awayScore"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Doubleheader:
+          </div>
+          <div class="ui-g-6">
+            <input pInputText type="text" [ngModel]="game.doubleHeader" [formControl]="form.controls.doubleHeader"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-sport #selectSport [sport]="sportId"
+                             (sportChanged)="onPropertyChanged('sportId', $event)"></sn-select-sport>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i>
+              Sport is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            League *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-league #selectLeague [sport]="sportId" [league]="leagueId"
+                              (leagueChanged)="onPropertyChanged('leagueId', $event)">
+            </sn-select-league>
+          </div>
+          <div class="ui-grid-col-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.leagueId.valid && form.controls.leagueId.dirty">
+              <i class="fa fa-close"></i>
+              League is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Away Team *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-team #selectAwayTeam [team]="awayTeamId" [league]="leagueId"
+                            (teamChanged)="onPropertyChanged('awayTeamId', $event)"></sn-select-team>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.awayTeamId.valid && form.controls.awayTeamId.dirty">
+              <i class="fa fa-close"></i>
+              Away Team is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Home Team *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-team #selectHomeTeam [team]="homeTeamId" [league]="leagueId"
+                            (teamChanged)="onPropertyChanged('homeTeamId', $event)">
+            </sn-select-team>
+          </div>
+          <div class="ui-grid-col-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.homeTeamId.valid && form.controls.homeTeamId.dirty">
+              <i class="fa fa-close"></i>
+              Home Team is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Competition *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-competition #selectCompetition [competition]="competitionId" [league]="leagueId"
+                                   (competitionChanged)="onPropertyChanged('competitionId', $event)">
+            </sn-select-competition>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.competitionId.valid && form.controls.competitionId.dirty">
+              <i class="fa fa-close"></i>
+              Sport is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Season *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-season #selectSeason [season]="seasonId" [league]="leagueId"
+                              (seasonChanged)="onPropertyChanged('seasonId', $event)">
+            </sn-select-season>
+          </div>
+          <div class="ui-grid-col-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.seasonId.valid && form.controls.seasonId.dirty">
+              <i class="fa fa-close"></i>
+              Season is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            Venue *:
+          </div>
+          <div class="ui-g-6">
+            <sn-select-venue #selectVenue [venue]="venueId" [sport]="sportId"
+                             (venueChanged)="onPropertyChanged('venueId', $event)">
+            </sn-select-venue>
+          </div>
+          <div class="ui-grid-col-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.venueId.valid && form.controls.venueId.dirty">
+              <i class="fa fa-close"></i>
+              Venue is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12" *ngIf="game.updated">
+          <div class="ui-g-3">
+            Updated:
+          </div>
+          <div class="ui-g-6">
+            {{game.updated | date:'short'}}
+          </div>
+        </div>
+
+        <div *ngIf="game.isDeleted" class="ui-g-12">
+          <div class="ui-g-2">
+            Deleted:
+          </div>
+          <div class="ui-g-6">
+            {{game.isDeleted}} {{game.deleted | date:'short'}}
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-3">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}"
+                    [disabled]="! form.valid"
+                    class="BlueButton"></button>
+          </div>
+          <div class="ui-g-3">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(game.id)" type="button"
+                    [disabled]="game.isDeleted"
+                    class="RedButton"></button>
+          </div>
+          <div class="ui-g-2"></div>
+          <div class="ui-g-4"></div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</sn-page>

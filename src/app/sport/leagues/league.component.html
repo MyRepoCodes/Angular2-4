@@ -1,0 +1,125 @@
+<sn-page [title]="title">
+
+  <sn-loading-status [loading]="loading" content="loading"></sn-loading-status>
+
+  <div class="ui-g" content="body">
+    <form *ngIf="league" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+
+      <input type="hidden" [ngModel]="league.id" [formControl]="form.controls.id">
+
+      <div class="ui-g form-group ui-fluid">
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Name *:
+          </div>
+          <div class="ui-g-4">
+            <input pInputText type="text" [ngModel]="league.name" [formControl]="form.controls.name" placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.name.valid && form.controls.name.dirty">
+              <i class="fa fa-close"></i> League Name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Abbreviation *:
+          </div>
+          <div class="ui-g-4">
+            <input pInputText type="text" [ngModel]="league.abbreviation" [formControl]="form.controls.abbreviation"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.abbreviation.valid && form.controls.abbreviation.dirty">
+              <i class="fa fa-close"></i> League Abbreviation is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Sport *:
+          </div>
+          <div class="ui-g-4">
+            <p-dropdown [options]="sportItems" [ngModel]="league.sport.id" [formControl]="form.controls.sportId"
+                        [autoWidth]="false"></p-dropdown>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.sportId.valid && form.controls.sportId.dirty">
+              <i class="fa fa-close"></i> Sport is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Order:
+          </div>
+          <div class="ui-g-4">
+            <input pInputText type="text" [ngModel]="league.order" [formControl]="form.controls.order"
+                   placeholder="Required"/>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-message ui-messages-error ui-corner-all"
+                 *ngIf="!form.controls.order.valid && form.controls.order.dirty">
+              <i class="fa fa-close"></i> League Order is required
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Updated:
+          </div>
+          <div class="ui-g-4">
+            {{league.updated | date:'short'}}
+          </div>
+        </div>
+
+        <div *ngIf="league.isDeleted" class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2">
+            Deleted:
+          </div>
+          <div class="ui-g-4">
+            {{league.isDeleted}} {{league.deleted | date:'short'}}
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad">
+          <div class="ui-g-2"></div>
+          <div class="ui-g-2">
+            <button pButton type="submit" label="{{(mode === 'create') ? 'Create' : 'Update'}}" [disabled]="! form.valid"
+            ></button>
+          </div>
+          <div class="ui-g-2">
+            <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <button pButton *ngIf="!(mode === 'create')" label="Delete"
+                    (click)="onDelete(league.id)" type="button"
+                    [disabled]="league.isDeleted"
+                    class="RedButton"
+            ></button>
+          </div>
+
+          <div class="ui-g-6"></div>
+        </div>
+
+      </div>
+
+    </form>
+
+    <div *ngIf="!league && !loading">League not found.</div>
+
+    <div class="ui-g-12" style="margin: 10px 0px">
+      <div class="ui-g-2">
+        <button pButton (click)="onCancel()" type="submit" label="Back to List" class="GreenButton"></button>
+      </div>
+    </div>
+
+  </div>
+
+</sn-page>

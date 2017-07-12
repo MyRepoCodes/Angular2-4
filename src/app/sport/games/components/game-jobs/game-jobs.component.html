@@ -1,0 +1,88 @@
+﻿<div class="ui-g">
+  <p-dataTable [value]="gameJobDetails" expandableRows="true">
+
+  <template let-data pTemplate="rowexpansion">
+    <div class="ui-g-12" *ngFor="let comment of data.comments | slice:1; let i = index;">
+      <div class="ui-g-10"></div>
+      <div class="ui-g-2">
+        <input type="text" pInputText [ngModel]="data.comments[i + 1]" #txt (keydown)="onCommentTyping($event, data, txt, i + 1)" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-10"></div>
+      <div class="ui-g-2">
+        <input type="text" pInputText #newComment (keydown)="onCommentTyping($event, data, newComment, -1)" />
+      </div>
+    </div>
+  </template>
+
+  <p-header>
+      {{jobsOverallStatus}}
+  </p-header>
+
+  <p-column field="job" header="Job"></p-column>
+
+  <p-column field="statusName" header="Status"></p-column>
+
+  <p-column header="Assignee" [style]="{'overflow':'visible'}">
+    <template let-assignPerson="rowData" pTemplate="body">
+      <p-dropdown [options]="assignPerson.assignee" [ngModel]="assignPerson.assigneeSelected"
+                  (ngModelChange)="assigneeSelected(assignPerson, $event)" [autoWidth]="false" [filter]="true">
+      </p-dropdown>
+    </template>
+  </p-column>
+
+  <p-column header="Outputs">
+    <template let-output="rowData" pTemplate="body">
+      <div class="ui-g-12 ui-g-nopad ui-fluid" >
+        <div class="ui-g-4 ui-g-nopad">
+          <button type="button" pButton (click)="selectOutput('fail', output)" label="{{output.output.fail}}" >
+          </button>
+        </div>
+        <div class="ui-g-4 ui-g-nopad">
+          <button type="button" pButton (click)="selectOutput('complete', output)" label="{{output.output.complete}}" [disabled]="output.isDisable">
+
+          </button>
+        </div>
+        <div class="ui-g-4 ui-g-nopad">
+          <button type="button" pButton (click)="selectOutput('claim', output)" label="{{output.output.claim}}" >
+          </button>
+        </div>
+      </div>
+    </template>
+  </p-column>
+
+  <p-column header="Comments">
+    <template let-job="rowData" pTemplate="body">
+      <input type="text" pInputText [ngModel]="job.comments[0]" #firstComment (keydown)="onCommentTyping($event, job, firstComment, 0)"/>
+    </template>
+  </p-column>
+
+  <p-column header="Status Updates">
+    <template let-job="rowData" pTemplate="body">
+      <div *ngFor="let update of job.statusUpdates">
+        {{getJobStatus(update.newStatus, job.jobType)}} | {{update.updated|date:'short'}}
+      </div>
+    </template>
+  </p-column>
+
+  <p-column expander="true" [style]="{'width':'40px'}"></p-column>
+
+</p-dataTable>
+
+  <div class="ui-g-12 ui-fluid">
+    <div class="ui-g-2">
+      <p-dropdown [options]="servers" [ngModel]="server" (ngModelChange)="onServerSelect($event)" [autoWidth]="false">
+      </p-dropdown>
+    </div>
+    <div class="ui-g-2">
+      <button pButton type="button" (click)="createJobs()" [disabled]="disableSetup"
+         label="Setup Jobs"></button>
+    </div>
+    <div class="ui-g-2">
+      <button pButton type="button" (click)="createMission()" [disabled]="disableSetup"
+              label="Setup Missions"></button>
+    </div>
+  </div>
+
+</div>

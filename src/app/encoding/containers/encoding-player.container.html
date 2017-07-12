@@ -1,0 +1,78 @@
+<div class="Container100">
+  <div class="Card">
+    <h1>
+      <span class="CardBigTopic Heading1">Encoding player</span>
+      <span class="CardSmallTopic" *ngIf="vm.activeStb">(connected to {{vm.activeStb.deviceHost}}, avermedia: {{vm.activeStb.avermediaHost}})</span>
+    </h1>
+    <div class="SeparatorFull"></div>
+
+    <div class="ui-grid encoding-player">
+      <div class="ui-grid-row">
+        <sn-directv-stream-selector class="ui-grid-col-6"
+                                    [availableDevices]="vm.encodingStbList$ | async"
+                                    [selectedDevice]="vm.selectedStb$ | async"
+                                    (onStbSelected)="vm.setStb($event)"
+                                    [selectedRemoteControl]="vm.selectedRemoteControl"
+                                    (selectedRemoteControlChange)="vm.setRemoteControl($event)"
+                                    [showRemoteControlSelector]="true"
+        >
+        </sn-directv-stream-selector>
+      </div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-8">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <sn-encoding-player
+                [style]="{width: '100%'}"
+                [selectedStb]="vm.selectedStb$ | async"
+                [volume]="vm.volume"
+                [isMuted]="vm.isMuted">
+              </sn-encoding-player>
+            </div>
+
+
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <sn-start-stop-controls [encodingParameters]="vm.encodingParameters"
+                                      (onBeginEncoding)="vm.encodingStarted($event)"
+                                      (onCancelEncoding)="vm.encodingCanceled($event)"
+                                      (onGameInfoRequested)="vm.loadGameInfo($event)">
+              </sn-start-stop-controls>
+            </div>
+          </div>
+        </div>
+        <div class="ui-grid-col-4">
+          <div class="ui-grid-row">
+            <div [ngSwitch]="vm.selectedRemoteControl">
+              <sn-encoding-controls *ngSwitchCase="remoteControlTypeWrapper.StbRemote"
+                                    class="ui-grid-col-3"
+                                    [selectedStb]="vm.activeStb"
+                                    (buttonClicked)="vm.controlButtonClicked($event)"
+                                    (sequenceRequested)="vm.controlSequenceRequested($event)">
+              </sn-encoding-controls>
+              <sn-avermedia-controls *ngSwitchCase="remoteControlTypeWrapper.AvermediaRemote"
+                                     class="ui-grid-col-4"
+                                     [selectedStb]="vm.activeStb"
+                                     [availableAvermediaButtons]="vm.availableAvermediaButtons$ | async"
+                                     (buttonClicked)="vm.avermediaButtonClicked($event)">
+              </sn-avermedia-controls>
+            </div>
+          </div>
+        </div>
+        <!--<div class="ui-grid-col-2">-->
+
+        <!--</div>-->
+      </div>
+
+      <div class="ui-grid-row">
+        <div>
+          <span>Volume level: {{vm.volume}}%</span>
+          <span *ngIf="vm.isMuted">Muted</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

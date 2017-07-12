@@ -1,0 +1,74 @@
+<sn-page [title]="'Conflict Resolution Rules'">
+
+  <div content="body">
+    <div class="ui-g">
+      <div class="ui-g-10">
+        <sn-scraping-filter #filter (change)="filterChanged($event)"></sn-scraping-filter>
+      </div>
+    </div>
+    <div class="ui-g">
+      <sn-prop-search *ngIf="filterParams.entity === 'Player'" [definitions]="playerSearchDefinitions" (search)="onPropSearch($event)"></sn-prop-search>
+      <sn-prop-search *ngIf="filterParams.entity === 'Game'" [definitions]="gameSearchDefinitions" (search)="onPropSearch($event)"></sn-prop-search>
+      <sn-prop-search *ngIf="filterParams.entity === 'GameLineup'" [definitions]="lineupSearchDefinitions" (search)="onPropSearch($event)"></sn-prop-search>
+    </div>
+
+
+    <p-dataTable [value]="rules">
+
+      <p-header>
+        <div class="ui-g">
+          <div class="ui-g-10">
+            Total Records: {{paging.total}}
+          </div>
+          <div class="ui-g-2">
+            <button pButton class="BlueButton" (click)="onAddButtonClick()" [disabled]="adding" icon="fa-plus-circle" style="float: right"></button>
+          </div>
+        </div>
+      </p-header>
+
+      <p-column field="resolutionWeight" header="Resolution Weight" [style]="{width: '6%', textAlign: 'center'}"></p-column>
+      <p-column header="Scraper URL">
+        <template pTemplate type="body" let-item="rowData">
+          <a href="{{item.scraperUrl}}">{{item.scraperUrl}}</a>
+        </template>
+      </p-column>
+      <p-column field="matchRules" header="Match">
+        <template pTemplate type="body" let-item="rowData">
+          {{item.matchRules | ruleText}}
+        </template>
+      </p-column>
+      <p-column field="resolutionRules" header="Resolve">
+        <template pTemplate type="body" let-item="rowData">
+          {{item.resolutionRules | ruleText}}
+        </template>
+      </p-column>
+      <p-column header="Edit" [style]="{width: '150px', textAlign: 'center'}" >
+        <template pTemplate type="body" let-item="rowData">
+          <div class="ui-g-12">
+            <button pButton class="BlueButton" (click)="onUpdateButtonClick(item)" icon="fa-pencil-square-o"></button>
+            <button pButton class="RedButton" (click)="onDeleteButtonClick(item)" icon="fa-trash"></button>
+          </div>
+        </template>
+      </p-column>
+
+    </p-dataTable>
+
+    <sn-paginator
+      [page]="paging.page"
+      [size]="paging.size"
+      [total]="paging.total"
+      (onPageSelected)="goToPage($event)"
+    ></sn-paginator>
+
+    <p-confirmDialog width="425"></p-confirmDialog>
+
+    <p-dialog header="Rule Editor" [(visible)]="dialogVisible" modal="modal" showEffect="fade" width="900">
+      <sn-rule-editor *ngIf="dialogVisible"
+                      [prefill]="rulePrefill" [selectedType]="filter.selectedEntityType" (canceled)="hideDialog()" (saved)="hideDialog()"
+      ></sn-rule-editor>
+    </p-dialog>
+  </div>
+
+</sn-page>
+
+

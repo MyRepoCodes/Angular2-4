@@ -1,0 +1,66 @@
+<div class="Container100">
+  <div class="Card">
+    <h1 class="CardBigTopic Heading1">Encoding schedule</h1>
+    <div class="SeparatorFull"></div>
+    <div class="encoding-schedule">
+      <p-dataScroller [value]="vm.schedule$ | async"
+                      [rows]="vm.LINES_COUNT"
+                      [lazy]="true"
+                      (onLazyLoad)="vm.loadSchedule($event)">
+        <ng-template let-channel  pTemplate="item">
+          <div class="ui-grid ui-grid-responsive ui-fluid channel">
+            <div class="ui-grid-row">
+              <div (click)="vm.onChannelClicked(channel)" class="ui-grid-col-2 encoding-schedule-header-cell">
+               <span><img src="https://www.directv.com/images/logos/channels/dark/medium/{{channel.chLogoId}}.png"
+                          onerror="{this.src='https://www.directv.com/img/ent/global/missing_channel_logo.png'}" /></span>
+                <span>{{channel.chNum}}</span>
+                <span>{{channel.chName}}</span>
+              </div>
+              <div class="ui-grid-col-10">
+                <div class="schedule">
+                  <ul>
+                    <li *ngFor="let item of channel.schedules">
+                      <div class="schedule-item" (click)="vm.scheduleClicked(channel, item)"
+                           [ngStyle]="vm.getScheduleStyle(channel, item)">
+                        <span>{{item.title}}</span>
+                        <span>{{vm.scheduleTime(item)}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                  <button class="add-schedule-btn" [style.left]="vm.getButtonShift(channel)"
+                          type="button" pButton icon="fa-plus"
+                          (click)="vm.loadAdditionalShows(channel, item)"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataScroller>
+      <p-dialog [header]="vm.selectedSchedule?.title" modal="true"
+                [(visible)]="vm.isScheduleDialogVisible" showEffect="fade"
+                width="600"
+      >
+        <span>Would you like to record this show?</span>
+        <sn-directv-stream-selector [availableDevices]="vm.devices$ | async"
+                                    [selectedDevice]="vm.selectedStb$ | async"
+                                    (onStbSelected)="vm.deviceChanged($event)"></sn-directv-stream-selector>
+        <button type="button" pButton icon="fa-check"
+                (click)="vm.encodeShow(vm.selectedChannel, vm.selectedSchedule)"
+                label="Encode live"></button>
+        <button type="button" pButton icon="fa-check"
+                (click)="vm.recordShow(vm.selectedChannel, vm.selectedSchedule)"
+                label="Record show"></button>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close"
+                    (click)="vm.hideScheduleDialog()"
+                    label="Cancel"></button>
+
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+  </div>
+</div>
+
+

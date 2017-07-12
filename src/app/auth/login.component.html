@@ -1,0 +1,23 @@
+﻿<body class="login-body" style="padding-top:60px">
+  <div id="login-wrapper">  
+    <img src="assets/images/logo/Synergy-logo-405x151.png" />
+    <div id="login-container">
+      <span class="title">Login</span>
+      <div *ngIf="error" style="color:red">
+        {{errorMsg}}
+      </div>
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="ui-g ui-fluid">
+        <div class="ui-g-12">         
+         <input pInputText type="text" placeholder="Enter username" [(ngModel)]="username" [ngModelOptions]="{standalone: true}" />
+        </div>
+        <div class="ui-g-12">         
+          <input pInputText type="password" placeholder="Enter password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" />
+        </div>
+       
+        <div class="ui-g-12">
+          <button pButton type="submit" [disabled]="!loginForm.form.valid || loggingIn" label="{{loginBtnText}}" class="GreenButton"></button>
+        </div>
+      </form>
+    </div>   
+  </div>
+</body>

@@ -1,0 +1,34 @@
+<div class="ui-g">
+  <div class="ui-g-12" *ngIf="!addingControl">
+
+    <p-dataTable [value]="issueType.controls">
+      <p-column field="title" header="Title">
+        <template let-data="rowData" pTemplate type="body">
+          <a [style.cursor]="'pointer'" (click)="editControl(data)">{{data.title}}</a>
+        </template>
+      </p-column>
+      <p-column field="type" header="Type"></p-column>
+      <p-column field="required" header="Required"></p-column>
+      <p-column header="Move">
+        <template pTemplate type="body" let-data="rowData">
+          <button type="button" pButton (click)="moveUp(data)" icon="fa-angle-up"></button>
+          <button type="button" pButton (click)="moveDown(data)" icon="fa-angle-down"></button>
+          <button type="button" pButton (click)="remove(data)" icon="fa-trash" class="RedButton"></button>
+        </template>
+      </p-column>
+    </p-dataTable>
+
+  </div>
+  <div class="ui-g-12" *ngIf="!addingControl">
+    <button pButton label="Add Control" (click)="addControl()"></button>
+    <button pButton label="Save" (click)="save()"></button>
+  </div>
+  <div class="ui-g-12" *ngIf="addingControl">
+    <sn-add-issue-control
+      [prefill]="selectedIssueControl"
+      (submit)="onIssueControlSubmit($event)"
+      (edit)="onIssueControlEdit($event)"
+      (cancel)="onCancel()"
+    ></sn-add-issue-control>
+  </div>
+</div>

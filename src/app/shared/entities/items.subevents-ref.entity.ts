@@ -1,0 +1,45 @@
+import { BasicMonikerRef } from './basic-moniker-ref.entity';
+import { BaseballGamePlayerRef } from './baseball.gameplayer-ref.entity';
+
+export class ItemsSubEventsRef extends BasicMonikerRef {
+  event: number;
+  pitchKind: number;
+  x: number;
+  y: number;
+  on1B: BaseballGamePlayerRef;
+  on2B: BaseballGamePlayerRef;
+  on3B: BaseballGamePlayerRef;
+  svId: string;
+  startSpeed: number;
+  endSpeed: number;
+  szTop: number;
+  szBot: number;
+  pfxx: number;
+  pfxz: number;
+  px: number;
+  pz: number;
+  x0: number;
+  y0: number;
+  z0: number;
+  vx0: number;
+  xy0: number;
+  xz0: number;
+  ax: number;
+  ay: number;
+  az: number;
+  breakY: number;
+  breakAngle: number;
+  breakLength: number;
+  typeConfidence: number;
+  zone: number;
+  nasty: number;
+  spinDir: number;
+  spinRate: number;
+  runnerGoing: boolean;
+  blockedByCatcher: boolean;
+  description: string;
+  eventNum: number;
+  duration: number;
+  utc: Date;
+  name: string;
+}

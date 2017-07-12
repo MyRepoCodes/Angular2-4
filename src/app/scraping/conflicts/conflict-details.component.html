@@ -1,0 +1,68 @@
+<h3>{{conflict.statusMessage}}</h3>
+<div class="ui-g" #element>
+  <div class="ui-g-2 label">Scraped Data ID:</div>
+  <div class="ui-g-4">{{conflict.id}}</div>
+
+  <div class="ui-g-2 label">Scrapper URL:</div>
+  <div class="ui-g-4">{{conflict.scraperUrl}}</div>
+
+  <div class="ui-g-2 label">Batch:</div>
+  <div class="ui-g-4">{{conflict.batch}}</div>
+
+  <div class="ui-g-2 label">SubBatch:</div>
+  <div class="ui-g-4">{{conflict.subBatch}}</div>
+
+  <sn-conflict-info
+    [entityType]="entityType"
+    [data]="conflict.data"
+  ></sn-conflict-info>
+
+  <div class="ui-g-12">
+    <div class="ui-g-3">
+      <button pButton label="Resync" (click)="resyncItem()" [disabled]="loading || isDuplicate"></button>
+    </div>
+    <div class="ui-g-3">
+      <button pButton label="Ignore" (click)="toggleIgnoreReasonInput()" [disabled]="loading"></button>
+    </div>
+    <div class="ui-g-3">
+      <button pButton label="Add New" (click)="addItem()" [disabled]="loading || isDuplicate"></button>
+    </div>
+    <div class="ui-g-3">
+      <button pButton label="Refresh Suggestions" (click)="loadResolution()" [disabled]="loading" class="yellow-button"></button>
+    </div>
+  </div>
+
+  <div class="ui-g-12" *ngIf="ignoring">
+    <div class="ui-g-2">Ignore reason:</div>
+    <div class="ui-g-8">
+      <input type="text" pInputText #reason/>
+    </div>
+    <div class="ui-g-2">
+      <button pButton label="Confirm" (click)="ignoreItem(reason.value)"></button>
+    </div>
+  </div>
+
+</div>
+
+<div class="SeparatorFull"></div>
+
+<div class="ui-g ui-message-error" *ngIf="resyncError">
+  Could not resync item.
+</div>
+
+<div *ngIf="!isSuitableStatus()">
+  Item marked for {{conflict.status}}
+</div>
+
+<div *ngIf="isSuitableStatus()">
+  <sn-conflict-resolution
+    [entityType]="entityType"
+    [conflict]="conflict"
+    [resolutionData]="resolution"
+    [loading]="loading">
+  </sn-conflict-resolution>
+</div>
+
+
+
+
